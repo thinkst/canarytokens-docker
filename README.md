@@ -43,5 +43,5 @@ CANARY_ALERT_EMAIL_SUBJECT="Canarytoken"
 * Finally, download and instatiate the images:
 ```
 $ docker-compose up
-
+```
 * Access the interface on http://example1.com/generate
