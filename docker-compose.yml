@@ -1,0 +1,27 @@
+frontend:
+  image: thinkst/canarytokens_frontend
+  links:
+   - redis
+  env_file:
+   - frontend.env
+switchboard:
+  image: thinkst/canarytokens_switchboard
+  ports:
+   - "53:53"
+   - "53:53/udp"
+   - "25:25"
+  links:
+   - redis
+  env_file:
+   - switchboard.env
+nginx:
+  image: thinkst/canarytokens_nginx
+  ports:
+   - "5080:80"
+  links:
+   - frontend
+   - switchboard
+redis:
+  image: redis
+#  volumes:
+#  - .:/data
