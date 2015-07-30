@@ -9,12 +9,12 @@ Canarytokens helps track activity and actions on your network.
 Prerequisites
 -------------
 * At least one domain name. If you want to enabled PDF-opening tracking, at least two domains.
-* Internet-facing Docker host.
+* Internet-facing Docker host. You can [intall Docker on a Linux host](https://docs.docker.com/installation/) quickly.
 
 Setup
 -----
 * Boot your Docker host, and take note of the public IP.
-* Configure your domains so that their nameservers point to the public IP of the Docker host. This involves more than simply changing NS records in the zonefile, it requires a change at the registrar. Most DNS providers support this. Check with ```whois```.
+* Configure your domains so that their nameservers point to the public IP of the Docker host. This depends on your DNS provider (in Amazon's Route 53, changing NS records is sufficient.)
 * Clone the Docker setup:
 ```
 $ git clone https://github.com/thinkst/canarytokens-docker
