@@ -17,7 +17,7 @@ switchboard:
 nginx:
   image: thinkst/canarytokens_nginx
   ports:
-   - "5080:80"
+   - "80:80"
   links:
    - frontend
    - switchboard

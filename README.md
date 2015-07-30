@@ -18,10 +18,13 @@ Setup
 * Clone the Docker setup:
 ```
 $ git clone https://github.com/thinkst/canarytokens-docker
+$ cd canarytokens-docker
 ```
 * Install Docker compose (if not already present):
 ```
 $ sudo pip install -U docker-compose
+#if this breaks with PyYAML errors, install the libyaml development package
+# Ubuntu: sudo apt-get install libyaml-dev
 ```
 * Configuration is held in the two .env files. Edit these. Here's example files for a setup that generates tokens on example1.com, example2.com and example3.com (PDFs), running on a host with public IP 1.1.1.1, using the Mandril API key 'xxxxxxxxxx':
   * frontend.ev
