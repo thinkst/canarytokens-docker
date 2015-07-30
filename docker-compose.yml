@@ -23,5 +23,5 @@ nginx:
    - switchboard
 redis:
   image: redis
-#  volumes:
-#  - .:/data
+  volumes:
+  - .:/data
