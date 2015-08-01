@@ -55,5 +55,5 @@ Persisting data
 
 The tokens are saved in a Redis database file which exists outside the Docker containers. Look for ```dumb.rdb``` in the ```canarytokens-docker/``` directory.
 
-If you want to wipe all your tokens, delete dumb.rdb.
+If you want to wipe all your tokens, delete dump.rdb.
 
