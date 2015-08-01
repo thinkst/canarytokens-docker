@@ -9,12 +9,12 @@ Canarytokens helps track activity and actions on your network.
 Prerequisites
 -------------
 * At least one domain name. If you want to enabled PDF-opening tracking, at least two domains.
-* Internet-facing Docker host. You can [intall Docker on a Linux host](https://docs.docker.com/installation/) quickly.
+* Internet-facing Docker host. You can [install Docker on a Linux host](https://docs.docker.com/installation/) quickly.
 
 Setup (in Ubuntu)
 -----------------
 * Boot your Docker host, and take note of the public IP.
-* Configure your domains so that their nameservers point to the public IP of the Docker host. This depends on your DNS provider (in Amazon's Route 53, changing NS records is sufficient.)
+* Configure your domains so that their nameservers point to the public IP of the Docker host. This requires a change at your Registrar, simply changing NS records in the zonefile is insufficient.
 * Clone the Docker setup:
 ```
 $ git clone https://github.com/thinkst/canarytokens-docker
@@ -48,4 +48,12 @@ CANARY_ALERT_EMAIL_SUBJECT="Canarytoken"
 ```
 $ docker-compose up
 ```
-* Access the interface on http://example1.com/generate
+* The frontend and switchboard will now be running in the foreground. The frontend is accessible at http://example1.com/generate
+
+Persisting data
+---------------
+
+The tokens are saved in a Redis database file which exists outside the Docker containers. Look for ```dumb.rdb``` in the ```canarytokens-docker/``` directory.
+
+If you want to wipe all your tokens, delete dumb.rdb.
+
