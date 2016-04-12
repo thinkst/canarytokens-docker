@@ -27,7 +27,7 @@ $ sudo pip install -U docker-compose
 #if this breaks with PyYAML errors, install the libyaml development package
 # sudo apt-get install libyaml-dev
 ```
-* Configuration is held in the two .env files. Edit these. If you are using Mailgun to send emails, delete 'CANARY_MANDRILL_API_KEY' from ```switchboard.ev``` and set the Mailgun Domain Name and API Key.  If you are using Mandrill, delete the Mailgun properties and set the Mandrill API Key. Here's example files for a setup that generates tokens on example1.com, example2.com and example3.com (PDFs), running on a host with public IP 1.1.1.1, using Mailgun Domain Name 'x.y' and API Key 'zzzzzzzzzz':
+* Configuration is held in the two .env files. Edit these. Uncomment 'CANARY_PUBLIC_DOMAIN' in ```switchboard.ev``` and set it to one of the domains defined for 'CANARY_DOMAIN' in ```frontend.ev```(if you do not uncomment and set it, the Public IP will be used).  If you are using Mailgun to send emails, uncomment 'CANARY_MAILGUN_DOMAIN_NAME' and 'CANARY_MAILGUN_API_KEY' from ```switchboard.ev``` and set the values.  If you are using Mandrill instead, uncomment 'CANARY_MANDRILL_API_KEY' and set it. Here's example files for a setup that generates tokens on example1.com, example2.com and example3.com (PDFs), running on a host with public domain 'my.domain' and IP 1.1.1.1, using Mailgun Domain Name 'x.y' and API Key 'zzzzzzzzzz':
   * frontend.ev
 ```
 #These domains are used for general purpose tokens
@@ -40,7 +40,9 @@ CANARY_NXDOMAINS=example3.com
 ```
 CANARY_MAILGUN_DOMAIN_NAME=x.y
 CANARY_MAILGUN_API_KEY=zzzzzzzzzz
+#CANARY_MANDRILL_API_KEY=
 CANARY_PUBLIC_IP=1.1.1.1
+CANARY_PUBLIC_DOMAIN=my.domain
 CANARY_ALERT_EMAIL_FROM_ADDRESS=noreply@example.com
 CANARY_ALERT_EMAIL_FROM_DISPLAY="Example Canarytokens"
 CANARY_ALERT_EMAIL_SUBJECT="Canarytoken"
