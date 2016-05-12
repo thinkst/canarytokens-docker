@@ -56,6 +56,6 @@ $ docker-compose up
 Persisting data
 ---------------
 
-The tokens are saved in a Redis database file which exists outside the Docker containers. Look for ```dumb.rdb``` in the ```canarytokens-docker/``` directory.
+The tokens are saved in a Redis database file which exists outside the Docker containers. Look for ```dump.rdb``` in the ```canarytokens-docker/data``` directory.
 
 If you want to wipe all your tokens, delete dump.rdb.

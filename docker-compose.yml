@@ -1,34 +1,42 @@
-redis:
-  image: redis
-  volumes:
-  - .:/data
-  container_name: redis
-frontend:
-  image: thinkst/canarytokens_frontend
-  links:
-   - redis
-  env_file:
-   - frontend.env
-  container_name: frontend
-  command: twistd -noy frontend.tac
-switchboard:
-  image: thinkst/canarytokens_switchboard
-  ports:
-   - "53:53"
-   - "53:53/udp"
-   - "25:25"
-  links:
-   - redis
-  env_file:
-   - switchboard.env
-  container_name: switchboard
-  command: twistd -noy switchboard.tac
-nginx:
-  image: thinkst/canarytokens_nginx
-  ports:
-   - "80:80"
-  links:
-   - frontend
-   - switchboard
-  container_name: nginx
-  command: /usr/sbin/nginx -c /etc/nginx/nginx.conf -g "daemon off;"
+version: '2'
+services:
+  redis:
+    restart: always
+    image: redis
+    volumes:
+    - ./data:/data/
+    container_name: redis
+    command: redis-server --appendonly yes --protected-mode no --save 60 1
+  frontend:
+    restart: always
+    build: ./canarytokens/
+    image: thinkst/canarytokens
+    links:
+     - redis
+    env_file:
+     - frontend.env
+    container_name: frontend
+    command: twistd -noy frontend.tac
+  switchboard:
+    build: ./canarytokens/
+    image: thinkst/canarytokens
+    ports:
+     - "53:53"
+     - "53:53/udp"
+     - "25:25"
+    links:
+     - redis
+    env_file:
+     - switchboard.env
+    container_name: switchboard
+    command: twistd -noy switchboard.tac
+  nginx:
+    restart: always
+    image: thinkst/canarytokens_nginx
+    ports:
+     - "80:80"
+    links:
+     - frontend
+     - switchboard
+    container_name: nginx
+    command: /usr/sbin/nginx -c /etc/nginx/nginx.conf -g "daemon off;"
