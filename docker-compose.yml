@@ -16,9 +16,10 @@ services:
     env_file:
      - frontend.env
     container_name: frontend
-    command: twistd -noy frontend.tac
+    command: bash -c "rm *.pid; twistd -noy frontend.tac -l frontend.log --pidfile=frontend.pid"
   switchboard:
     build: ./canarytokens/
+    restart: always
     image: thinkst/canarytokens
     ports:
      - "53:53"
@@ -29,7 +30,7 @@ services:
     env_file:
      - switchboard.env
     container_name: switchboard
-    command: twistd -noy switchboard.tac
+    command: bash -c "rm *.pid; twistd -noy switchboard.tac -l switchboard.log --pidfile=switchboard.pid"
   nginx:
     restart: always
     image: thinkst/canarytokens_nginx
