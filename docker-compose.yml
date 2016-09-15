@@ -15,8 +15,10 @@ services:
      - redis
     env_file:
      - frontend.env
+    volumes:
+    - ./uploads:/uploads/
     container_name: frontend
-    command: bash -c "rm *.pid; twistd -noy frontend.tac -l frontend.log --pidfile=frontend.pid"
+    command: bash -c "rm frontend.pid; twistd -noy frontend.tac -l frontend.log --pidfile=frontend.pid"
   switchboard:
     build: ./canarytokens/
     restart: always
@@ -29,8 +31,10 @@ services:
      - redis
     env_file:
      - switchboard.env
+    volumes_from:
+    - frontend
     container_name: switchboard
-    command: bash -c "rm *.pid; twistd -noy switchboard.tac -l switchboard.log --pidfile=switchboard.pid"
+    command: bash -c "rm switchboard.pid; twistd -noy switchboard.tac -l switchboard.log --pidfile=switchboard.pid"
   nginx:
     restart: always
     image: thinkst/canarytokens_nginx
