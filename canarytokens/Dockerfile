@@ -1,11 +1,11 @@
 FROM ubuntu:16.04
 MAINTAINER Marco Slaviero <marco@thinkst.com>
-LABEL Description="This image is provides the frontend site for Canarytokens" Vendor="Thinkst Applied Research" Version="1.0"
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates wget python-pip unzip osslsigncode gcc python-dev libreadline-dev libncurses5-dev libffi-dev gcc patch make libxslt-dev libxml2-dev libz-dev fortune-mod && rm -rf /var/lib/apt/lists/* 
+LABEL Description="This image is provides the frontend site for Canarytokens" Vendor="Thinkst Applied Research" Version="1.1"
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates wget python-pip unzip osslsigncode gcc python-dev libreadline-dev libncurses5-dev libffi-dev gcc patch make libxslt-dev libxml2-dev libz-dev fortune-mod fortunes && rm -rf /var/lib/apt/lists/* 
 WORKDIR /
 RUN pip install -U setuptools
 RUN pip install --upgrade pip
-RUN pip install --no-cache-dir Jinja2==2.7.3
+RUN pip install --no-cache-dir Jinja2==2.9.4
 RUN pip install --no-cache-dir MarkupSafe==0.23
 RUN pip install --no-cache-dir Twisted==15.2.1
 RUN pip install --no-cache-dir cssselect==0.9.1
