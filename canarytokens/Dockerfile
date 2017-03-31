@@ -27,7 +27,7 @@ RUN pip install --no-cache-dir zope.interface==4.1.2
 RUN pip install --no-cache-dir PyQRCode==1.2.1
 RUN pip install --no-cache-dir pypng==0.0.18
 RUN pip install --no-cache-dir htmlmin==0.1.10
-RUN pip install --no-cache-dir sendgrid==3.6.3
+RUN pip install --no-cache-dir sendgrid==3.6.5
 
 RUN wget -O master.zip https://github.com/thinkst/canarytokens/archive/master.zip?step=1
 RUN unzip master.zip
