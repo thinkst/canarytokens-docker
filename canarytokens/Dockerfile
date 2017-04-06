@@ -1,7 +1,7 @@
 FROM ubuntu:16.04
 MAINTAINER Marco Slaviero <marco@thinkst.com>
 LABEL Description="This image is provides the frontend site for Canarytokens" Vendor="Thinkst Applied Research" Version="1.1"
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates wget python-pip unzip osslsigncode gcc python-dev libreadline-dev libncurses5-dev libffi-dev gcc patch make libxslt-dev libxml2-dev libz-dev fortune-mod fortunes libssl-dev && rm -rf /var/lib/apt/lists/* 
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates wget python-pip unzip osslsigncode gcc python-dev libreadline-dev libncurses5-dev libffi-dev gcc patch make libxslt-dev libxml2-dev libz-dev fortune-mod fortunes libssl-dev && rm -rf /var/lib/apt/lists/*
 WORKDIR /
 RUN pip install -U setuptools
 RUN pip install --upgrade pip
@@ -27,6 +27,7 @@ RUN pip install --no-cache-dir zope.interface==4.1.2
 RUN pip install --no-cache-dir PyQRCode==1.2.1
 RUN pip install --no-cache-dir pypng==0.0.18
 RUN pip install --no-cache-dir htmlmin==0.1.10
+RUN pip install --no-cache-dir sendgrid==3.6.5
 
 RUN wget -O master.zip https://github.com/thinkst/canarytokens/archive/master.zip?step=1
 RUN unzip master.zip
