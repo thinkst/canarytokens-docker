@@ -18,7 +18,7 @@ services:
     volumes:
     - ./uploads:/uploads/
     container_name: frontend
-    command: bash -c "rm frontend.pid; twistd -noy frontend.tac -l frontend.log --pidfile=frontend.pid"
+    command: bash -c "rm frontend.pid; twistd -noy frontend.tac --logger log.logger --pidfile=frontend.pid"
   switchboard:
     build: ./canarytokens/
     restart: always
@@ -34,7 +34,7 @@ services:
     volumes_from:
     - frontend
     container_name: switchboard
-    command: bash -c "rm switchboard.pid; twistd -noy switchboard.tac -l switchboard.log --pidfile=switchboard.pid"
+    command: bash -c "rm switchboard.pid; twistd -noy switchboard.tac --logger log.logger --pidfile=switchboard.pid"
   nginx:
     restart: always
     image: thinkst/canarytokens_nginx
