@@ -37,12 +37,28 @@ services:
     command: bash -c "rm switchboard.pid; twistd -noy switchboard.tac --logger log.logger --pidfile=switchboard.pid"
   nginx:
     restart: always
-    image: thinkst/canarytokens_nginx
-    build: ./nginx/
+    build: nginx-image
     ports:
      - "80:80"
+     - "443:443"
     links:
      - frontend
      - switchboard
+     - letsencrypt
     container_name: nginx
-    command: /usr/sbin/nginx -c /etc/nginx/nginx.conf -g "daemon off;"
+    volumes_from:
+      - letsencrypt
+    environment:
+      - MY_DOMAIN_NAME=thinkst.com
+
+  letsencrypt:
+    image: quay.io/letsencrypt/letsencrypt:latest
+    container_name: letsencrypt
+    command:  bash -c "sleep 6 && certbot certonly --standalone -d thinkst.com --text --agree-tos --email info@thinkst.com --server https://acme-v01.api.letsencrypt.org/directory --rsa-key-size 4096 --verbose --renew-by-default --standalone-supported-challenges http-01"
+    entrypoint: ""
+    volumes:
+      - /etc/letsencrypt
+      - /var/lib/letsencrypt
+    ports:
+      - "80"
+      - "443"
