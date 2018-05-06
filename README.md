@@ -64,3 +64,19 @@ Persisting data
 The tokens are saved in a Redis database file which exists outside of the Docker containers. Look for ```dump.rdb``` in the ```canarytokens-docker/data``` directory.
 
 If you want to wipe all your tokens, delete dump.rdb.
+
+Its 2018: I want HTTPS!
+-----------------------
+We have a separate docker compose file which will automate (mostly) getting you up and running a Canarytokens server with HTTPS. 
+You will need to do the following:
+
+* Edit the ```docker-compose-lets-encrypt.yml```. Specifically, in the nginx section, you will need to provide your domain and email address (these are necessary for the certbot's registration process). 
+E.g. 
+```
+MY_DOMAIN_NAME=example.com
+EMAIL_ADDRESS=jay@thinkst.com
+```
+* Now when you want to bring up your server, you will use ```docker-compose -f docker-compose-lets-encrypt.yml up``` which will run the
+server in the foreground so you can make sure everything gets started alright.
+
+* If everything is running, you may want to CTRL+C, run ```docker-compose -f docker-compose-lets-encrypt.yml down``` to get to a clean slate and then rerun ```docker-compose -f docker-compose-lets-encrypt.yml up -d``` with the added ```-d``` to run the server in the background (in daemon mode)
