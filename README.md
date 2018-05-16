@@ -70,13 +70,17 @@ Its 2018: I want HTTPS!
 We have a separate docker compose file which will automate (mostly) getting you up and running a Canarytokens server with HTTPS. 
 You will need to do the following:
 
-* Edit the ```docker-compose-lets-encrypt.yml```. Specifically, in the nginx section, you will need to provide your domain and email address (these are necessary for the certbot's registration process). 
+* Edit the ```certbot.env```. You will need to provide your domain and email address (these are necessary for the certbot's registration process). 
 E.g. 
 ```
 MY_DOMAIN_NAME=example.com
-EMAIL_ADDRESS=jay@thinkst.com
+EMAIL_ADDRESS=jay@exmaple.com
 ```
 * Now when you want to bring up your server, you will use ```docker-compose -f docker-compose-lets-encrypt.yml up``` which will run the
 server in the foreground so you can make sure everything gets started alright.
 
 * If everything is running, you may want to CTRL+C, run ```docker-compose -f docker-compose-lets-encrypt.yml down``` to get to a clean slate and then rerun ```docker-compose -f docker-compose-lets-encrypt.yml up -d``` with the added ```-d``` to run the server in the background (in daemon mode)
+
+* Please keep in mind that using the HTTPS method will use the email you specified and the domain name to register the certificate. You can read about the lets encrypt process (using cerbot) over [here](https://certbot.eff.org/lets-encrypt/ubuntuxenial-nginx). The process involves verifying that you are the owner of the domain you have specified and registering you with lets encrypt. 
+
+* THERE IS A RATE LIMIT. So don't keep bringing this server up and down otherwise you will quickly hit a lets encrypt certificate generation limit. To avoid this, for testing purposes you may add ```--staging``` to the ```./certbot-auto``` command in ```cerbot-nginx/start.sh``` which will test whether lets encrypt gives you the certificate. q

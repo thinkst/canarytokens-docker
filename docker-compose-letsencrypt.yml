@@ -46,7 +46,6 @@ services:
      - frontend
      - switchboard
     container_name: nginx
-    environment:
-      - MY_DOMAIN_NAME=<INSERT_YOUR_DOMAIN>
-      - EMAIL_ADDRESS=<INSERT_EMAIL_ADDRESS>
+    env_file:
+      -certbot.env
       
