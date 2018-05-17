@@ -17,6 +17,7 @@ services:
      - frontend.env
     volumes:
     - ./uploads:/uploads/
+    - log-volume:/logs
     container_name: frontend
     command: bash -c "rm frontend.pid; twistd -noy frontend.tac --logger log.logger --pidfile=frontend.pid"
   switchboard:
@@ -48,4 +49,6 @@ services:
     container_name: nginx
     env_file:
       -certbot.env
+volumes:
+  log-volume:
       

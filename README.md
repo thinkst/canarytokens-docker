@@ -74,7 +74,7 @@ You will need to do the following:
 E.g. 
 ```
 MY_DOMAIN_NAME=example.com
-EMAIL_ADDRESS=jay@exmaple.com
+EMAIL_ADDRESS=jay@example.com
 ```
 * Now when you want to bring up your server, you will use ```docker-compose -f docker-compose-lets-encrypt.yml up``` which will run the
 server in the foreground so you can make sure everything gets started alright.
@@ -83,4 +83,4 @@ server in the foreground so you can make sure everything gets started alright.
 
 * Please keep in mind that using the HTTPS method will use the email you specified and the domain name to register the certificate. You can read about the lets encrypt process (using cerbot) over [here](https://certbot.eff.org/lets-encrypt/ubuntuxenial-nginx). The process involves verifying that you are the owner of the domain you have specified and registering you with lets encrypt. 
 
-* THERE IS A RATE LIMIT. So don't keep bringing this server up and down otherwise you will quickly hit a lets encrypt certificate generation limit. To avoid this, for testing purposes you may add ```--staging``` to the ```./certbot-auto``` command in ```cerbot-nginx/start.sh``` which will test whether lets encrypt gives you the certificate. q
+* THERE IS A RATE LIMIT. So don't keep bringing this server up and down otherwise you will quickly hit a lets encrypt certificate generation limit. To avoid this, for testing purposes you may add ```--staging``` to the ```./certbot-auto``` command in ```cerbot-nginx/start.sh``` which will test whether lets encrypt gives you the certificate. 
