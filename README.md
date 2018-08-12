@@ -76,10 +76,10 @@ E.g.
 MY_DOMAIN_NAME=example.com
 EMAIL_ADDRESS=jay@example.com
 ```
-* Now when you want to bring up your server, you will use ```docker-compose -f docker-compose-lets-encrypt.yml up``` which will run the
+* Now when you want to bring up your server, you will use ```docker-compose -f docker-compose-letsencrypt.yml up``` which will run the
 server in the foreground so you can make sure everything gets started alright.
 
-* If everything is running, you may want to CTRL+C, run ```docker-compose -f docker-compose-lets-encrypt.yml down``` to get to a clean slate and then rerun ```docker-compose -f docker-compose-lets-encrypt.yml up -d``` with the added ```-d``` to run the server in the background (in daemon mode)
+* If everything is running, you may want to CTRL+C, run ```docker-compose -f docker-compose-letsencrypt.yml down``` to get to a clean slate and then rerun ```docker-compose -f docker-compose-letsencrypt.yml up -d``` with the added ```-d``` to run the server in the background (in daemon mode)
 
 * Please keep in mind that using the HTTPS method will use the email you specified and the domain name to register the certificate. You can read about the lets encrypt process (using cerbot) over [here](https://certbot.eff.org/lets-encrypt/ubuntuxenial-nginx). The process involves verifying that you are the owner of the domain you have specified and registering you with lets encrypt. 
 
