@@ -48,7 +48,7 @@ services:
      - switchboard
     container_name: nginx
     env_file:
-      -certbot.env
+     - certbot.env
 volumes:
   log-volume:
       
