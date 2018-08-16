@@ -1,5 +1,6 @@
 FROM nginx
 MAINTAINER Thinkst Applied Research "jason@thinkst.com"
+LABEL Description="This image provides the http proxy for Canarytokens" Vendor="Thinkst Applied Research" Version="1.0"
 
 RUN apt-get update &&  apt-get install -y \
   wget \
