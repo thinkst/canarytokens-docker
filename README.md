@@ -11,6 +11,12 @@ Prerequisites
 * At least one domain name. If you want to enable PDF-opening tracking, at least two domains.
 * Internet-facing Docker host. You can [install Docker on a Linux host](https://docs.docker.com/installation/) quickly.
 
+What's new?
+-----------
+We are going to track some new features/additions here so that it is quick and easy to see what has been recently added.
+- we have added a new environment variable to `frontend.env` called `CANARY_AWSID_URL` which allows you to specify a private or
+  different url for the AWS ID token. This means you can easily change between accounts. (2018-10-17)
+
 Setup (in Ubuntu)
 -----------------
 * Boot your Docker host, and take note of the public IP.
