@@ -14,6 +14,9 @@ Prerequisites
 What's new?
 -----------
 We are going to track some new features/additions here so that it is quick and easy to see what has been recently added.
+
+- we now have slack support. When you supply a webhook, you simply supply your slack webhook url. (Thanks to @shortstack).
+
 - we have added a new environment variable to `frontend.env` called `CANARY_AWSID_URL` which allows you to specify a private or
   different url for the AWS ID token. This means you can easily change between accounts. (2018-10-17)
 
