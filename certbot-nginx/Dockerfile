@@ -5,6 +5,7 @@ LABEL Description="This image provides the http proxy for Canarytokens" Vendor="
 RUN apt-get update &&  apt-get install -y \
   wget \
   procps
+
 RUN wget https://dl.eff.org/certbot-auto && chmod a+x ./certbot-auto
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY start.sh /
