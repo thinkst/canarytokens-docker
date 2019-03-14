@@ -13,7 +13,6 @@ if [ $? -eq 0 ]; then
        echo "Certificate is already present and won't expire in the next week, skipping renewal"
        cp /etc/letsencrypt/nginx.conf /etc/nginx/nginx.conf
 else
-       ls -al /etc/letsencrypt/live/
        echo "Fetching certificate from LetsEncrypt"
        nginx
        sleep 5
