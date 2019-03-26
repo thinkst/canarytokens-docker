@@ -17,7 +17,7 @@ RUN pip install --no-cache-dir lxml==3.4.4
 RUN pip install --no-cache-dir mandrill==1.0.57
 RUN pip install --no-cache-dir pytz==2015.4
 RUN pip install --no-cache-dir redis==2.10.3
-RUN pip install --no-cache-dir requests==2.7.0
+RUN pip install --no-cache-dir requests==2.20.0
 RUN pip install --no-cache-dir simplejson==3.7.3
 RUN pip install --no-cache-dir six==1.10.0
 RUN pip install --no-cache-dir twilio==4.4.0
@@ -30,7 +30,7 @@ RUN pip install --no-cache-dir htmlmin==0.1.10
 RUN pip install --no-cache-dir sendgrid==3.6.5
 RUN pip install --no-cache-dir service_identity
 
-RUN wget -O master.zip https://github.com/thinkst/canarytokens/archive/master.zip?step=18
+RUN wget -O master.zip https://github.com/thinkst/canarytokens/archive/master.zip?step=19
 RUN unzip master.zip
 RUN mv /canarytokens-master/* /srv
 RUN rm -rf /canarytokens-master
