@@ -122,11 +122,15 @@ You may follow these steps if you wish to have a public facing canarytokens site
 4) edit the appropriate `nginx.conf` and
 ```
 server {
-    auth_basic           "Basic Auth Restricted Canrytokens"; <---- ADD
-    auth_basic_user_file /etc/nginx/htpasswd;                 <---- ADD
+    ...
+    location ~* (/generate|/manage|/download|/history|/settings|/resources).* {
+        auth_basic           "Basic Auth Restricted Canrytokens"; <---- ADD
+        auth_basic_user_file /etc/nginx/.htpasswd;                 <---- ADD
 ```
 5) edit the appropriate `Dockerfile` and add below `COPY nginx.conf ...`
 ```
 COPY htpasswd /etc/nginx/htpasswd
 ```
 6) rebuild the images using `docker-compose build`, restart your docker containers and enjoy!
+
+Thanks @mamisano for catching a silly issue using the above 🙏 
