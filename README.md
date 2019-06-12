@@ -49,7 +49,8 @@ $ sudo pip install -U docker-compose
 4) Next decide on which email provider you want to use to send alerts. If you are using Mailgun to send emails, uncomment `CANARY_MAILGUN_DOMAIN_NAME` and `CANARY_MAILGUN_API_KEY` from ```switchboard.ev``` and set the values.  If you are using Mandrill or Sendgrid instead, uncomment the appropriate API key setting and set it.
 
 * Here's example files for a setup that generates tokens on example1.com, example2.com and example3.com (PDFs), running on a host with public domain 'my.domain' and IP 1.1.1.1, using Mailgun Domain Name 'x.y' and API Key 'zzzzzzzzzz':
-  * frontend.ev
+
+  * frontend.env
 ```
 #These domains are used for general purpose tokens
 CANARY_DOMAINS=example1.com,example2.com
@@ -61,7 +62,7 @@ CANARY_NXDOMAINS=example3.com
 #CANARY_GOOGLE_API_KEY=
 
 ```
-  * switchboard.ev (Example using Mailgun for email)
+  * switchboard.env (Example using Mailgun for email)
 ```
 CANARY_MAILGUN_DOMAIN_NAME=x.y
 CANARY_MAILGUN_API_KEY=zzzzzzzzzz
