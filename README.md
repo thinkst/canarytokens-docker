@@ -15,6 +15,10 @@ What's new?
 -----------
 We are going to track some new features/additions here so that it is quick and easy to see what has been recently added.
 
+- we've renamed the distributed .env files to ```switchboard.env.dist``` and ```frontend.env.dist```. This ensures that your local
+  configuration doesn't get blown away when you pull changes from the repo. (We still use ```switchboard.env``` and ```frontend.env```
+  for the config, it just means that new clones of the repo require the users to copy / rename the dist files)
+
 - we have added an extra `switchboard.env` called `CANARY_IPINFO_API_KEY`. This allows you to use your ipinfo.io api key if you
   want to (keep in mind ipinfo.io does have a free tier of up to 1000 requests a day).
 
@@ -39,7 +43,9 @@ $ sudo pip install -U docker-compose
 #if this breaks with PyYAML errors, install the libyaml development package
 # sudo apt-get install libyaml-dev
 ```
-* Configuration is held in the two .env files: ```switchboard.env``` and  ```frontend.env```. Edit these.
+
+* We distribute two .env files that will be used for configuration, namely  ```switchboard.env.dist``` and ```frontend.env.dist```. You'll need to copy / rename them to ```switchboard.env``` and  ```frontend.env``` respectively (this ensures that your configuration doesn't get blown away if you pull changes). Once that is done, you can edit them:
+
 1) Set the values for `CANARY_DOMAINS` in ```frontend.env```. These must be domains you own because you will need to add an A record to each `CANARY_DOMAINS` specified pointing the domain towards your docker's public IP.
 
 2) [NOTE: This step is only necessary if you want to use PDF tokens] Set the values for `CANARY_NXDOMAINS` in ```frontend.env```. These must be domains you own because you will need to add an NS record to each `CANARY_NXDOMAINS` specified pointing the domain towards your previously specified `CANARY_DOMAINS`.
@@ -134,4 +140,4 @@ COPY .htpasswd /etc/nginx/.htpasswd
 ```
 7) rebuild the images using `docker-compose build`, restart your docker containers and enjoy!
 
-Thanks @mamisano for catching a silly issue using the above 🙏 
+Thanks @mamisano for catching a silly issue using the above 🙏
