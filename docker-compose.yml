@@ -14,7 +14,7 @@ services:
     links:
      - redis
     env_file:
-     - frontend.env
+     - frontend.env.dist
     volumes:
     - ./uploads:/uploads/
     - log-volume:/logs
@@ -31,7 +31,7 @@ services:
     links:
      - redis
     env_file:
-     - switchboard.env
+     - switchboard.env.dist
     volumes_from:
     - frontend
     container_name: switchboard

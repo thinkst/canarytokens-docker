@@ -13,16 +13,16 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK=1
 # installing PIP requirements from requirements.txt file
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates \
     wget python-pip unzip osslsigncode gcc python-dev libreadline-dev \
-    libncurses5-dev libffi-dev gcc patch make libxslt-dev libxml2-dev \ 
-    libz-dev fortune-mod fortunes libssl-dev && \ 
+    libncurses5-dev libffi-dev gcc patch make libxslt-dev libxml2-dev \
+    libz-dev fortune-mod fortunes libssl-dev && \
     rm -rf /var/lib/apt/lists/* && \
     pip install -U setuptools && \
     pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt && \
-    wget -O master.zip https://github.com/thinkst/canarytokens/archive/master.zip?step=22 && \
+    wget -O master.zip https://github.com/thinkst/canarytokens/archive/upgrade.zip?step=5 && \
     unzip master.zip && \
-    mv /canarytokens-master/* /srv && \
-    rm -rf /canarytokens-master
+    mv /canarytokens-upgrade/* /srv && \
+    rm -rf /canarytokens-upgrade
 # discarding the build-stage image and adding a new one
 # with only the necessary binaries/libraries to run the app
 FROM builder as canary-tokens
