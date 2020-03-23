@@ -14,12 +14,12 @@ services:
     links:
      - redis
     env_file:
-     - frontend.env.dist
+     - frontend.env
     volumes:
     - ./uploads:/uploads/
     - log-volume:/logs
     container_name: frontend
-    command: bash -c "rm frontend.pid; twistd -noy frontend.tac --logger log.logger --pidfile=frontend.pid"
+    command: bash -c "rm frontend.pid; twistd -noy frontend.tac --pidfile=frontend.pid"
   switchboard:
     build: ./canarytokens/
     restart: always
@@ -31,11 +31,11 @@ services:
     links:
      - redis
     env_file:
-     - switchboard.env.dist
+     - switchboard.env
     volumes_from:
     - frontend
     container_name: switchboard
-    command: bash -c "rm switchboard.pid; twistd -noy switchboard.tac --logger log.logger --pidfile=switchboard.pid"
+    command: bash -c "rm switchboard.pid; twistd -noy switchboard.tac --pidfile=switchboard.pid"
   nginx:
     restart: always
     image: thinkst/canarytokens_nginx
