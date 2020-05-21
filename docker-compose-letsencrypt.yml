@@ -30,6 +30,8 @@ services:
      - "25:25"
     links:
      - redis
+    environment:
+     - PROTOCOL=https
     env_file:
      - switchboard.env
     volumes_from:
