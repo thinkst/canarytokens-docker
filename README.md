@@ -8,7 +8,7 @@ Canarytokens helps track activity and actions on your network.
 
 Prerequisites
 -------------
-* At least one domain name. If you want to enable PDF-opening tracking, at least two domains.
+* At least one domain name. If you want to enable PDF-opening tracking, you will need one domain name + a sub-domain (or two domain names).
 * Internet-facing Docker host. You can [install Docker on a Linux host](https://docs.docker.com/installation/) quickly.
 
 What's new?
@@ -18,19 +18,72 @@ We are going to track some new features/additions here so that it is quick and e
 - we've renamed the distributed .env files to ```switchboard.env.dist``` and ```frontend.env.dist```. This ensures that your local
   configuration doesn't get blown away when you pull changes from the repo. (We still use ```switchboard.env``` and ```frontend.env```
   for the config, it just means that new clones of the repo require the users to copy / rename the dist files)
-
 - we have added an extra `switchboard.env` called `CANARY_IPINFO_API_KEY`. This allows you to use your ipinfo.io api key if you
   want to (keep in mind ipinfo.io does have a free tier of up to 1000 requests a day).
-
 - we now have slack support. When you supply a webhook, you simply supply your slack webhook url. (Thanks to @shortstack).
-
 - we have added a new environment variable to `frontend.env` called `CANARY_AWSID_URL` which allows you to specify a private or
   different url for the AWS ID token. This means you can easily change between accounts. (2018-10-17)
 
+
+
+## Domain name / DNS configuration
+
+You register a domain name using a "registrar". This "registrar" has a communication channel with the "registry" which is the entity managing the TLD (`.com` for example).
+
+The registry operate some DNS servers that list domain names available into it's TLD, with the corresponding "next" DNS servers in the chain to send requests to for further records inside this domain zone.
+
+You configure in admin panel of you registrar, what DNS servers you want the registrar to "push" into the DNS servers managed by the registry.
+
+
+
+- Registry DNS level
+
+This information is defined into the Registrar admin panel (then pushed to Registry DNS servers)
+
+```
+example.com.    NS    ns1.my.dns.servers.
+example.com .   NS    ns2.my.dns.servers.
+```
+
+
+
+- Domain DNS level
+
+On `nsX.my.dns.servers.`  DNS servers, configure the following example of zone content
+
+```
+ns.example.com.       A     1.2.3.4
+example.com.          NS    ns.example.com.
+example.com.          A     1.2.3.4
+nx.example.com.       NS    ns.example.com.
+```
+
+You must set your CanaryToken server as "NS" for your domain name. NS record can't be an IP address, so you must also define a name. Here we  decided to name our "NS" server with the not-too-suspicious name "ns" just because "canarytoken" may looks far too suspicious :)
+
+`1.2.3.4` is the public IP of the Docker host.
+
+`nx.example.com` is a name to be used by the PDF token and to be set into `CANARY_NXDOMAINS=` variable.
+
+
+
+![](canary-dns.png)
+
+
+
+Note: At the registrar, you can choose  what DNS servers you want to use for your domain name. In most cases, the registrar give you the opportunity to configure your domain, to use the registrar free DNS servers (ex: `ns.myregistrar.com`), and in this case, you can edit the zone DNS records also into the Registrar admin panel.
+
+But in our specific case, we want a very special setup with a very special DNS server (our canary token server), and we want to set the `NS` record accordingly. **Most registrars that will offer you to "host" the DNS ervers for your domain name, will NOT let you configure your zone file with NS records that are different to those you also asked to use at the registry level** as such special setup would usually break the domain name availability for most people.
+
+You may get errors when creating the "other" NS record, or you could simply not be allowed to configure any NS records into the zone file.
+
+Workaround in such case is to NOT use the Registrar DNS servers.. but instead use "external DNS servers", then you will edit your zone file on that "external" DNS provider which can be your own DNS server or some other free available.
+
+
+
 Setup (in Ubuntu)
 -----------------
+
 * Boot your Docker host, and take note of the public IP.
-* Configure your domains so that their nameservers point to the public IP of the Docker host. This requires a change at your Registrar. Simply changing NS records in the zonefile is insufficient. You will need an A record of your domain pointing towards your public IP.
 * Clone the Docker setup:
 ```
 $ git clone https://github.com/thinkst/canarytokens-docker
@@ -52,7 +105,15 @@ $ sudo pip install -U docker-compose
 
 3) Uncomment 'CANARY_PUBLIC_DOMAIN' in ```switchboard.env``` and set it to one of the domains defined for `CANARY_DOMAINS` in ```frontend.env```(if you do not uncomment and set it, the Public IP will be used).
 
-4) Next decide on which email provider you want to use to send alerts. If you are using Mailgun to send emails, uncomment `CANARY_MAILGUN_DOMAIN_NAME` and `CANARY_MAILGUN_API_KEY` from ```switchboard.env``` and set the values.  If you are using Mandrill or Sendgrid instead, uncomment the appropriate API key setting and set it.
+4) Next decide on which email provider you want to use to send alerts. 
+
+If you are using Mailgun to send emails, uncomment `CANARY_MAILGUN_DOMAIN_NAME` and `CANARY_MAILGUN_API_KEY` from ```switchboard.env``` and set the values.  
+
+If you are using Mandrill or Sendgrid instead, uncomment the appropriate API key setting and set it.
+
+If you are using your own SMTP server, use `CANARY_SMTP_SERVER`,`CANARY_SMTP_PORT`, `CANARY_SMTP_USERNAME`, `CANARY_SMTP_PASSWORD`.
+
+
 
 * Here's example files for a setup that generates tokens on example1.com, example2.com and example3.com (PDFs), running on a host with public domain 'my.domain' and IP 1.1.1.1, using Mailgun Domain Name 'x.y' and API Key 'zzzzzzzzzz':
 
@@ -89,7 +150,7 @@ $ docker-compose up
 $ docker-compose up -d
 ```
 
-NOTE: If you only own one domain, and would like to use pdf tokens, you can use subdomains for `CANARY_NXDOMAINS`. Using `example.com` as our domain, you can set `CANARY_NXDOMAINS` to `nx.example.com`. Then log into your DNS manager console (where you can edit your domain DNS records) and add an NS record of `nx.example.com` mapping to `example.com`.
+NOTE: If you only own one domain, and would like to use pdf tokens, you can use subdomains for `CANARY_NXDOMAINS`. Using `example.com` as our domain, you can set `CANARY_NXDOMAINS` to `nx.example.com`. 
 
 Persisting data
 ---------------
