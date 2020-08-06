@@ -22,3 +22,4 @@ pypng==0.0.18
 htmlmin==0.1.10
 sendgrid==3.6.5
 service_identity
+pyinotify==0.9.6
