@@ -106,7 +106,12 @@ You will need to do the following:
 * Edit the ```certbot.env```. You will need to provide your domain and email address (these are necessary for the certbot's registration process).
 E.g.
 ```
+# Specify a single domain name
 MY_DOMAIN_NAME=example.com
+
+# or multiple domains names with this different key (comment out MY_DOMAIN_NAME above if you do):
+# MY_DOMAIN_NAMES=example.com anotherexample.net thirdexample.org
+
 EMAIL_ADDRESS=jay@example.com
 ```
 * Now when you want to bring up your server, you will use ```docker-compose -f docker-compose-letsencrypt.yml up``` which will run the
