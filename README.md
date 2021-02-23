@@ -98,7 +98,7 @@ The tokens are saved in a Redis database file which exists outside of the Docker
 
 If you want to wipe all your tokens, delete dump.rdb.
 
-It's 2018: I want HTTPS!
+It's 2021: I want HTTPS!
 -----------------------
 We have a separate docker compose file which will automate (mostly) getting you up and running a Canarytokens server with HTTPS.
 You will need to do the following:
