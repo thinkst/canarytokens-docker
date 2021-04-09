@@ -15,6 +15,10 @@ What's new?
 -----------
 We are going to track some new features/additions here so that it is quick and easy to see what has been recently added.
 
+- we now have the capability for sending error logs to a webhook of your choice, hopefully alerting you
+or your team to the failures as opposed to these errors only living in a log file.
+Simply supply the corresponding webhook URI in the `ERROR_LOG_WEBHOOK` value in your switchboard.env file. (2021-04-09)
+
 - we've renamed the distributed .env files to ```switchboard.env.dist``` and ```frontend.env.dist```. This ensures that your local
   configuration doesn't get blown away when you pull changes from the repo. (We still use ```switchboard.env``` and ```frontend.env```
   for the config, it just means that new clones of the repo require the users to copy / rename the dist files)
@@ -98,7 +102,7 @@ The tokens are saved in a Redis database file which exists outside of the Docker
 
 If you want to wipe all your tokens, delete dump.rdb.
 
-It's 2018: I want HTTPS!
+I want HTTPS!
 -----------------------
 We have a separate docker compose file which will automate (mostly) getting you up and running a Canarytokens server with HTTPS.
 You will need to do the following:
