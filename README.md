@@ -15,6 +15,10 @@ What's new?
 -----------
 We are going to track some new features/additions here so that it is quick and easy to see what has been recently added.
 
+- we now have the capability for sending error logs to a webhook of your choice, hopefully alerting you
+or your team to the failures as opposed to these errors only living in a log file.
+Simply supply the corresponding webhook URI in the `ERROR_LOG_WEBHOOK` value in your switchboard.env file. (2021-04-09)
+
 - we now have slack support. When you supply a webhook, you simply supply your slack webhook url. (Thanks to @shortstack).
 
 - we have added a new environment variable to `frontend.env` called `CANARY_AWSID_URL` which allows you to specify a private or
@@ -76,11 +80,11 @@ If you want to wipe all your tokens, delete dump.rdb.
 
 Its 2018: I want HTTPS!
 -----------------------
-We have a separate docker compose file which will automate (mostly) getting you up and running a Canarytokens server with HTTPS. 
+We have a separate docker compose file which will automate (mostly) getting you up and running a Canarytokens server with HTTPS.
 You will need to do the following:
 
-* Edit the ```certbot.env```. You will need to provide your domain and email address (these are necessary for the certbot's registration process). 
-E.g. 
+* Edit the ```certbot.env```. You will need to provide your domain and email address (these are necessary for the certbot's registration process).
+E.g.
 ```
 MY_DOMAIN_NAME=example.com
 EMAIL_ADDRESS=jay@example.com
@@ -90,6 +94,6 @@ server in the foreground so you can make sure everything gets started alright.
 
 * If everything is running, you may want to CTRL+C, run ```docker-compose -f docker-compose-letsencrypt.yml down``` to get to a clean slate and then rerun ```docker-compose -f docker-compose-letsencrypt.yml up -d``` with the added ```-d``` to run the server in the background (in daemon mode)
 
-* Please keep in mind that using the HTTPS method will use the email you specified and the domain name to register the certificate. You can read about the lets encrypt process (using cerbot) over [here](https://certbot.eff.org/lets-encrypt/ubuntuxenial-nginx). The process involves verifying that you are the owner of the domain you have specified and registering you with lets encrypt. 
+* Please keep in mind that using the HTTPS method will use the email you specified and the domain name to register the certificate. You can read about the lets encrypt process (using cerbot) over [here](https://certbot.eff.org/lets-encrypt/ubuntuxenial-nginx). The process involves verifying that you are the owner of the domain you have specified and registering you with lets encrypt.
 
-* THERE IS A RATE LIMIT. So don't keep bringing this server up and down otherwise you will quickly hit a lets encrypt certificate generation limit. To avoid this, for testing purposes you may add ```--staging``` to the ```./certbot-auto``` command in ```cerbot-nginx/start.sh``` which will test whether lets encrypt gives you the certificate. 
+* THERE IS A RATE LIMIT. So don't keep bringing this server up and down otherwise you will quickly hit a lets encrypt certificate generation limit. To avoid this, for testing purposes you may add ```--staging``` to the ```./certbot-auto``` command in ```cerbot-nginx/start.sh``` which will test whether lets encrypt gives you the certificate.
