@@ -31,6 +31,11 @@ Simply supply the corresponding webhook URI in the `ERROR_LOG_WEBHOOK` value in 
 - we have added a new environment variable to `frontend.env` called `CANARY_AWSID_URL` which allows you to specify a private or
   different url for the AWS ID token. This means you can easily change between accounts. (2018-10-17)
 
+- if you intend to build the image to be run on another system with different architecture, you can build the images with 
+  `docker-compose build --build-arg ARCH=<target arch>/`, noting the forward slash at the end of the argument. The image will not build
+  correctly if this is not included.
+  
+
 Setup (in Ubuntu)
 -----------------
 * Boot your Docker host, and take note of the public IP.
