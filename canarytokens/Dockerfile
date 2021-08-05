@@ -1,4 +1,6 @@
-FROM amd64/ubuntu:18.04 as builder
+ARG ARCH
+
+FROM ${ARCH}ubuntu:18.04 as builder
 
 MAINTAINER Marco Slaviero <marco@thinkst.com>
 
