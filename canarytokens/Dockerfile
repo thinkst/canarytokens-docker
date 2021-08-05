@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 as builder
+FROM amd64/ubuntu:18.04 as builder
 
 MAINTAINER Marco Slaviero <marco@thinkst.com>
 
@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates
     pip install -U setuptools && \
     pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt && \
-    wget -O master.zip https://github.com/thinkst/canarytokens/archive/master.zip?step=1 && \
+    wget -O master.zip https://github.com/thinkst/canarytokens/archive/master.zip?step=2 && \
     unzip master.zip && \
     mv /canarytokens-master/* /srv && \
     rm -rf /canarytokens-master
