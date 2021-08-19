@@ -6,6 +6,8 @@ Overview
 --------
 Canarytokens helps track activity and actions on your network.
 
+If you have any issues please check out our FAQ over [here](https://github.com/thinkst/canarytokens/wiki#), or create an issue and we'll try get back to you as soon as possible.
+
 Prerequisites
 -------------
 * At least one domain name. If you want to enable PDF-opening tracking, at least two domains.
@@ -31,10 +33,10 @@ Simply supply the corresponding webhook URI in the `ERROR_LOG_WEBHOOK` value in 
 - we have added a new environment variable to `frontend.env` called `CANARY_AWSID_URL` which allows you to specify a private or
   different url for the AWS ID token. This means you can easily change between accounts. (2018-10-17)
 
-- if you intend to build the image to be run on another system with different architecture, you can build the images with 
+- if you intend to build the image to be run on another system with different architecture, you can build the images with
   `docker-compose build --build-arg ARCH=<target arch>/`, noting the forward slash at the end of the argument. The image will not build
   correctly if this is not included.
-  
+
 
 Setup (in Ubuntu)
 -----------------
@@ -62,6 +64,8 @@ $ sudo pip install -U docker-compose
 3) Uncomment 'CANARY_PUBLIC_DOMAIN' in ```switchboard.env``` and set it to one of the domains defined for `CANARY_DOMAINS` in ```frontend.env```(if you do not uncomment and set it, the Public IP will be used).
 
 4) Next decide on which email provider you want to use to send alerts. If you are using Mailgun to send emails, uncomment `CANARY_MAILGUN_DOMAIN_NAME` and `CANARY_MAILGUN_API_KEY` from ```switchboard.env``` and set the values.  If you are using Mandrill or Sendgrid instead, uncomment the appropriate API key setting and set it.
+
+If you are using Mailgun's European infrastructure for your Canarytokens Server, you will need to add `CANARY_MAILGUN_EU_REGION=true` to your `switchboard.env`.
 
 * Here's example files for a setup that generates tokens on example1.com, example2.com and example3.com (PDFs), running on a host with public domain 'my.domain' and IP 1.1.1.1, using Mailgun Domain Name 'x.y' and API Key 'zzzzzzzzzz':
 
