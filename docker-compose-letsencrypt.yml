@@ -49,5 +49,7 @@ services:
     container_name: nginx
     env_file:
      - certbot.env
+    volumes:
+     - /etc/letsencrypt/:/etc/letsencrypt/
 volumes:
   log-volume:
