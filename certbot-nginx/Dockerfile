@@ -1,6 +1,6 @@
 FROM nginx
 LABEL Author="Thinkst Applied Research"
-LABEL Description="This image provides the http proxy for Canarytokens" Vendor="Thinkst Applied Research" Version="1.0"
+LABEL Description="This image provides the http proxy for Canarytokens" Vendor="Thinkst Applied Research" Version="2.0"
 
 RUN apt-get update &&  apt-get install -y \
   wget \
