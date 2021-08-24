@@ -50,7 +50,6 @@ services:
     env_file:
      - certbot.env
     volumes:
-     - /etc/letsencrypt/:/etc/letsencrypt/:ro
-     - canarytokens-docker/certbot-nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+     - /etc/letsencrypt/:/etc/letsencrypt/
 volumes:
   log-volume:
