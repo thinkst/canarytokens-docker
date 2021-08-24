@@ -49,5 +49,8 @@ services:
     container_name: nginx
     env_file:
      - certbot.env
+    volumes:
+     - /etc/letsencrypt/:/etc/letsencrypt/:ro
+     - canarytokens-docker/certbot-nginx/nginx.conf:/etc/nginx/nginx.conf:ro
 volumes:
   log-volume:
