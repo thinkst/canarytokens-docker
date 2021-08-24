@@ -77,7 +77,7 @@ CANARY_DOMAINS=example1.com,example2.com
 #These domains are only used for PDF tokens
 CANARY_NXDOMAINS=example3.com
 
-#Requires a Google API key to generate incident map on history page
+#Requires a Google Cloud API key to generate incident map on history page with the Maps JavaScript API
 #CANARY_GOOGLE_API_KEY=
 
 ```
