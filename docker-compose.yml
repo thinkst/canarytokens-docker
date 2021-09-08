@@ -28,6 +28,7 @@ services:
      - "53:53"
      - "53:53/udp"
      - "25:25"
+     - "3306:3306"
     links:
      - redis
     env_file:
