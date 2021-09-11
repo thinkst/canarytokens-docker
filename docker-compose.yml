@@ -10,7 +10,7 @@ services:
   frontend:
     restart: always
     build: ./canarytokens/
-    image: thinkst/canarytokens
+    image: orlenko/canarytokens
     links:
      - redis
     env_file:
@@ -23,7 +23,7 @@ services:
   switchboard:
     build: ./canarytokens/
     restart: always
-    image: thinkst/canarytokens
+    image: orlenko/canarytokens
     ports:
      - "53:53"
      - "53:53/udp"
