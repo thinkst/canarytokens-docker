@@ -79,6 +79,7 @@ CANARY_NXDOMAINS=example3.com
 
 #Requires a Google Cloud API key to generate incident map on history page with the Maps JavaScript API
 #CANARY_GOOGLE_API_KEY=
+CANARY_PUBLIC_IP=1.1.1.1
 
 ```
   * switchboard.env (Example using Mailgun for email)
