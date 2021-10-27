@@ -57,17 +57,28 @@ $ sudo pip install -U docker-compose
 
 * We distribute two .env files that will be used for configuration, namely  ```switchboard.env.dist``` and ```frontend.env.dist```. You'll need to copy / rename them to ```switchboard.env``` and  ```frontend.env``` respectively (this ensures that your configuration doesn't get blown away if you pull changes). Once that is done, you can edit them:
 
-1) Set the values for `CANARY_DOMAINS` in ```frontend.env```. These must be domains you own because you will need to add an A record to each `CANARY_DOMAINS` specified pointing the domain towards your docker's public IP.
+1) Set the `CANARY_PUBLIC_IP` in both configurations to the same public IP used for the external public IP for switchboard which handles the Canarytoken triggers.
 
-2) [NOTE: This step is only necessary if you want to use PDF tokens] Set the values for `CANARY_NXDOMAINS` in ```frontend.env```. These must be domains you own because you will need to add an NS record to each `CANARY_NXDOMAINS` specified pointing the domain towards your previously specified `CANARY_DOMAINS`.
+2) Set the values for `CANARY_DOMAINS` in ```frontend.env```. These must be domains you own because you will need to add an A record to each `CANARY_DOMAINS` specified pointing the domain towards your docker's public IP.
 
-3) Uncomment 'CANARY_PUBLIC_DOMAIN' in ```switchboard.env``` and set it to one of the domains defined for `CANARY_DOMAINS` in ```frontend.env```(if you do not uncomment and set it, the Public IP will be used).
+3) [NOTE: This step is only necessary if you want to use PDF tokens] Set the values for `CANARY_NXDOMAINS` in ```frontend.env```. These must be domains you own because you will need to add an NS record to each `CANARY_NXDOMAINS` specified pointing the domain towards your previously specified `CANARY_DOMAINS`.
 
-4) Next decide on which email provider you want to use to send alerts. If you are using Mailgun to send emails, uncomment `CANARY_MAILGUN_DOMAIN_NAME` and `CANARY_MAILGUN_API_KEY` from ```switchboard.env``` and set the values.  If you are using Mandrill or Sendgrid instead, uncomment the appropriate API key setting and set it.
+4) Uncomment 'CANARY_PUBLIC_DOMAIN' in ```switchboard.env``` and set it to one of the domains defined for `CANARY_DOMAINS` in ```frontend.env```(if you do not uncomment and set it, the Public IP will be used).
 
-If you are using Mailgun's European infrastructure for your Canarytokens Server, you will need to add `CANARY_MAILGUN_BASE_URL=https://api.eu.mailgun.net` to your `switchboard.env`.
+5) Next decide on which email provider you want to use to send alerts. If you are using Mailgun to send emails, uncomment `CANARY_MAILGUN_DOMAIN_NAME` and `CANARY_MAILGUN_API_KEY` from ```switchboard.env``` and set the values.  If you are using Mandrill or Sendgrid instead, uncomment the appropriate API key setting and set it. If using Mailgun's European infrastructure for your Canarytokens Server, you will need to add `CANARY_MAILGUN_BASE_URL=https://api.eu.mailgun.net` to your `switchboard.env`.
 
-* Here's example files for a setup that generates tokens on example1.com, example2.com and example3.com (PDFs), running on a host with public domain 'my.domain' and IP 1.1.1.1, using Mailgun Domain Name 'x.y' and API Key 'zzzzzzzzzz':
+6) Generate a single unique WireGuard key seed to set as `CANARY_WG_PRIVATE_KEY_SEED` in both `switchboard.env` and `frontend.env` with the command:
+
+```
+dd bs=32 count=1 if=/dev/urandom 2>/dev/null | base64
+```
+
+* Here's example files for a setup that uses:
+  * the domains example1.com, example2.com and example3.com (PDFs) for canarytoken triggers via switchboard
+  * the public IP 1.1.1.1 for the switchboard triggers
+  * the domain 'my.domain' to serve the frontend
+  * the Mailgun Domain Name 'x.y' and API Key 'zzzzzzzzzz'
+  * the WireGuard key seed `vk/GD+frlhve/hDTTSUvqpQ/WsQtioKAri0Rt5mg7dw=`
 
   * frontend.env
 ```
@@ -79,6 +90,8 @@ CANARY_NXDOMAINS=example3.com
 
 #Requires a Google Cloud API key to generate incident map on history page with the Maps JavaScript API
 #CANARY_GOOGLE_API_KEY=
+CANARY_PUBLIC_IP=1.1.1.1
+CANARY_WG_PRIVATE_KEY_SEED=vk/GD+frlhve/hDTTSUvqpQ/WsQtioKAri0Rt5mg7dw=
 
 ```
   * switchboard.env (Example using Mailgun for email)
@@ -92,6 +105,7 @@ CANARY_PUBLIC_DOMAIN=my.domain
 CANARY_ALERT_EMAIL_FROM_ADDRESS=noreply@example.com
 CANARY_ALERT_EMAIL_FROM_DISPLAY="Example Canarytokens"
 CANARY_ALERT_EMAIL_SUBJECT="Canarytoken"
+CANARY_WG_PRIVATE_KEY_SEED=vk/GD+frlhve/hDTTSUvqpQ/WsQtioKAri0Rt5mg7dw=
 ```
 * Finally, download and initiate the images:
 ```
