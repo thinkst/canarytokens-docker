@@ -19,7 +19,7 @@ services:
     - ./uploads:/uploads/
     - log-volume:/logs
     container_name: frontend
-    command: bash -c "rm frontend.pid; twistd -noy frontend.tac --pidfile=frontend.pid"
+    command: bash -c "rm -f frontend.pid; twistd -noy frontend.tac --pidfile=frontend.pid"
   switchboard:
     build: ./canarytokens/
     restart: always
@@ -29,6 +29,7 @@ services:
      - "53:53/udp"
      - "25:25"
      - "3306:3306"
+     - "6443:6443"
      - "51820:51820/udp"
     links:
      - redis
@@ -37,7 +38,7 @@ services:
     volumes_from:
     - frontend
     container_name: switchboard
-    command: bash -c "rm switchboard.pid; twistd -noy switchboard.tac --pidfile=switchboard.pid"
+    command: bash -c "rm -f switchboard.pid; twistd -noy switchboard.tac --pidfile=switchboard.pid"
   nginx:
     restart: always
     image: thinkst/certbot-nginx
