@@ -4,7 +4,7 @@ FROM ${ARCH}ubuntu:18.04 as builder
 
 MAINTAINER Marco Slaviero <marco@thinkst.com>
 
-LABEL Description="This image provides the frontend site for Canarytokens" Vendor="Thinkst Applied Research" Version="1.4"
+LABEL Description="This image provides the frontend site for Canarytokens" Vendor="Thinkst Applied Research" Version="1.5"
 # setting the current directory
 WORKDIR /
 # uploading PIP requirements file into the base image
