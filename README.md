@@ -49,7 +49,7 @@ $ cd canarytokens-docker
 ```
 * Install Docker compose (if not already present):
 ```
-$ sudo apt-get install python-pip python-dev
+$ sudo apt-get install python3-pip python3-dev
 $ sudo pip install -U docker-compose
 #if this breaks with PyYAML errors, install the libyaml development package
 # sudo apt-get install libyaml-dev
