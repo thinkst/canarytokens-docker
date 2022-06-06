@@ -4,9 +4,9 @@ by Thinkst Applied Research
 
 Overview
 --------
-Canarytokens helps track activity and actions on your network.
+Canarytokens help track activity and actions on your network.
 
-If you have any issues please check out our FAQ over [here](https://github.com/thinkst/canarytokens/wiki#), or create an issue and we'll try get back to you as soon as possible.
+If you have any issues please check out our FAQ over [here](https://github.com/thinkst/canarytokens/wiki#), or create an issue and we'll try to get back to you as soon as possible.
 
 Prerequisites
 -------------
@@ -17,21 +17,21 @@ What's new?
 -----------
 We are going to track some new features/additions here so that it is quick and easy to see what has been recently added.
 
-- we now have the capability for sending error logs to a webhook of your choice, hopefully alerting you
+- we now have the capability of sending error logs to a webhook of your choice, hopefully alerting you
 or your team to the failures as opposed to these errors only living in a log file.
 Simply supply the corresponding webhook URI in the `ERROR_LOG_WEBHOOK` value in your switchboard.env file. (2021-04-09)
 
 - we've renamed the distributed .env files to ```switchboard.env.dist``` and ```frontend.env.dist```. This ensures that your local
   configuration doesn't get blown away when you pull changes from the repo. (We still use ```switchboard.env``` and ```frontend.env```
-  for the config, it just means that new clones of the repo require the users to copy / rename the dist files)
+  for the config, it just means that new clones of the repo require the users to copy/rename the dist files)
 
-- we have added an extra `switchboard.env` called `CANARY_IPINFO_API_KEY`. This allows you to use your ipinfo.io api key if you
+- we have added an extra `switchboard.env` called `CANARY_IPINFO_API_KEY`. This allows you to use your ipinfo.io API key if you
   want to (keep in mind ipinfo.io does have a free tier of up to 1000 requests a day).
 
-- we now have slack support. When you supply a webhook, you simply supply your slack webhook url. (Thanks to @shortstack).
+- we now have slack support. When you supply a webhook, you simply supply your slack webhook URL. (Thanks to @shortstack).
 
 - we have added a new environment variable to `frontend.env` called `CANARY_AWSID_URL` which allows you to specify a private or
-  different url for the AWS ID token. This means you can easily change between accounts. (2018-10-17)
+  different URL for the AWS ID token. This means you can easily change between accounts. (2018-10-17)
 
 - if you intend to build the image to be run on another system with different architecture, you can build the images with
   `docker-compose build --build-arg ARCH=<target arch>/`, noting the forward slash at the end of the argument. The image will not build
@@ -41,7 +41,7 @@ Simply supply the corresponding webhook URI in the `ERROR_LOG_WEBHOOK` value in 
 Setup (in Ubuntu)
 -----------------
 * Boot your Docker host, and take note of the public IP.
-* Configure your domains so that their nameservers point to the public IP of the Docker host. This requires a change at your Registrar. Simply changing NS records in the zonefile is insufficient. You will need an A record of your domain pointing towards your public IP.
+* Configure your domains so that their nameservers point to the public IP of the Docker host. This requires a change at your Registrar. Simply changing NS records in the zone file is insufficient. You will need an A record of your domain pointing towards your public IP.
 * Clone the Docker setup:
 ```
 $ git clone https://github.com/thinkst/canarytokens-docker
@@ -55,7 +55,7 @@ $ sudo pip install -U docker-compose
 # sudo apt-get install libyaml-dev
 ```
 
-* We distribute two .env files that will be used for configuration, namely  ```switchboard.env.dist``` and ```frontend.env.dist```. You'll need to copy / rename them to ```switchboard.env``` and  ```frontend.env``` respectively (this ensures that your configuration doesn't get blown away if you pull changes). Once that is done, you can edit them:
+* We distribute two .env files that will be used for configuration, namely  ```switchboard.env.dist``` and ```frontend.env.dist```. You'll need to copy/rename them to ```switchboard.env``` and  ```frontend.env``` respectively (this ensures that your configuration doesn't get blown away if you pull changes). Once that is done, you can edit them:
 
 1) Set the `CANARY_PUBLIC_IP` in both configurations to the same public IP used for the external public IP for switchboard which handles the Canarytoken triggers.
 
@@ -73,8 +73,8 @@ $ sudo pip install -U docker-compose
 dd bs=32 count=1 if=/dev/urandom 2>/dev/null | base64
 ```
 
-* Here's example files for a setup that uses:
-  * the domains example1.com, example2.com and example3.com (PDFs) for canarytoken triggers via switchboard
+* Here are example files for a setup that uses:
+  * the domains example1.com, example2.com, and example3.com (PDFs) for canarytoken triggers via switchboard
   * the public IP 1.1.1.1 for the switchboard triggers
   * the domain 'my.domain' to serve the frontend
   * the Mailgun Domain Name 'x.y' and API Key 'zzzzzzzzzz'
@@ -88,7 +88,7 @@ CANARY_DOMAINS=example1.com,example2.com
 #These domains are only used for PDF tokens
 CANARY_NXDOMAINS=example3.com
 
-#Requires a Google Cloud API key to generate incident map on history page with the Maps JavaScript API
+#Requires a Google Cloud API key to generate an incident map on the history page with the Maps JavaScript API
 #CANARY_GOOGLE_API_KEY=
 CANARY_PUBLIC_IP=1.1.1.1
 CANARY_WG_PRIVATE_KEY_SEED=vk/GD+frlhve/hDTTSUvqpQ/WsQtioKAri0Rt5mg7dw=
@@ -111,7 +111,7 @@ CANARY_WG_PRIVATE_KEY_SEED=vk/GD+frlhve/hDTTSUvqpQ/WsQtioKAri0Rt5mg7dw=
 ```
 $ docker-compose up
 ```
-* The frontend and switchboard will now be running in the foreground. The frontend is accessible at http://example1.com/generate. If you wish to run this in the background, you may use
+* The front end and switchboard will now be running in the foreground. The front end is accessible at http://example1.com/generate. If you wish to run this in the background, you may use
 ```
 $ docker-compose up -d
 ```
@@ -121,13 +121,13 @@ NOTE: If you only own one domain, and would like to use pdf tokens, you can use 
 Persisting data
 ---------------
 
-The tokens are saved in a Redis database file which exists outside of the Docker containers. Look for ```dump.rdb``` in the ```canarytokens-docker/data``` directory.
+The tokens are saved in a Redis database file that exists outside of the Docker containers. Look for ```dump.rdb``` in the ```canarytokens-docker/data``` directory.
 
 If you want to wipe all your tokens, delete dump.rdb.
 
 I want HTTPS!
 -----------------------
-We have a separate docker compose file which will automate (mostly) getting you up and running a Canarytokens server with HTTPS.
+We have a separate docker-compose file that will automate (mostly) getting you up and running a Canarytokens server with HTTPS.
 You will need to do the following:
 
 * Edit the ```certbot.env```. You will need to provide your domain and email address (these are necessary for the certbot's registration process).
@@ -144,15 +144,15 @@ EMAIL_ADDRESS=jay@example.com
 * Now when you want to bring up your server, you will use ```docker-compose -f docker-compose-letsencrypt.yml up``` which will run the
 server in the foreground so you can make sure everything gets started alright.
 
-* If everything is running, you may want to CTRL+C, run ```docker-compose -f docker-compose-letsencrypt.yml down``` to get to a clean slate and then rerun ```docker-compose -f docker-compose-letsencrypt.yml up -d``` with the added ```-d``` to run the server in the background (in daemon mode)
+* If everything is running, you may want to CTRL+C, run ```docker-compose -f docker-compose-letsencrypt.yml down``` to get to a clean slate, and then rerun ```docker-compose -f docker-compose-letsencrypt.yml up -d``` with the added ```-d``` to run the server in the background (in daemon mode)
 
-* Please keep in mind that using the HTTPS method will use the email you specified and the domain name to register the certificate. You can read about the lets encrypt process (using cerbot) over [here](https://certbot.eff.org/lets-encrypt/ubuntuxenial-nginx). The process involves verifying that you are the owner of the domain you have specified and registering you with lets encrypt.
+* Please keep in mind that using the HTTPS method will use the email you specified and the domain name to register the certificate. You can read about the let's encrypt process (using cerbot) over [here](https://certbot.eff.org/lets-encrypt/ubuntuxenial-nginx). The process involves verifying that you are the owner of the domain you have specified and registering you with let's encrypt.
 
-* THERE IS A RATE LIMIT. So don't keep bringing this server up and down otherwise you will quickly hit a lets encrypt certificate generation limit. To avoid this, for testing purposes you may add ```--staging``` to the ```./certbot-auto``` command in ```cerbot-nginx/start.sh``` which will test whether lets encrypt gives you the certificate.
+* THERE IS A RATE LIMIT. So don't keep bringing this server up and down otherwise you will quickly hit a let's encrypt certificate generation limit. To avoid this, for testing purposes you may add ```--staging``` to the ```./certbot-auto``` command in ```cerbot-nginx/start.sh``` which will test whether let's encrypt gives you the certificate.
 
 Enabling Basic Auth to your Canarytokens Site
 ---------------------------------------------
-You may follow these steps if you wish to have a public facing canarytokens site but would like some basic auth in order to access it.
+You may follow these steps if you wish to have a public-facing canarytokens site but would like some basic auth to access it.
 
 1) `git clone https://github.com/thinkst/canarytokens-docker.git`
 2) `cd canarytokens-docker/nginx` or if you plan on using HTTPS, `cd canarytokens-docker/certbot-nginx`
@@ -170,6 +170,6 @@ server {
 ```
 COPY .htpasswd /etc/nginx/.htpasswd
 ```
-7) rebuild the images using `docker-compose build`, restart your docker containers and enjoy!
+7) rebuild the images using `docker-compose build`, restart your docker containers, and enjoy!
 
-Thanks @mamisano for catching a silly issue using the above 🙏
+Thanks, @mamisano for catching a silly issue using the above 🙏
