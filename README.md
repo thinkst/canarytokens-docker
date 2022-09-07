@@ -162,7 +162,7 @@ You may follow these steps if you wish to have a public-facing canarytokens site
 ```
 server {
     ...
-    location ~* (/generate|/manage|/download|/history|/settings|/resources|/terms).* {
+    location ~* (/generate|/manage|/download|/history|/settings|/resources|/legal).* {
         auth_basic           "Basic Auth Restricted Canrytokens"; <---- ADD
         auth_basic_user_file /etc/nginx/.htpasswd;                 <---- ADD
 ```
