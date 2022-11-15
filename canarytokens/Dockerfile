@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates
     pip install -U setuptools && \
     pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir Twisted==19.10.0 && \
     wget -O master.zip https://github.com/thinkst/canarytokens/archive/refs/heads/master.zip && \
     unzip master.zip && \
     mv /canarytokens-master/* /srv && \
