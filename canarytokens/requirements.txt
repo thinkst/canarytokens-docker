@@ -1,6 +1,6 @@
 Automat==20.2.0
 Faker==3.0.1
-Jinja2==2.11.0
+Jinja2==2.11.3
 MarkupSafe==0.23
 PyHamcrest==1.10.1
 PyNaCl==1.4.0
