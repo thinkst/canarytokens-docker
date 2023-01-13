@@ -22,7 +22,7 @@ hyperlink==21.0.0
 idna==2.7
 incremental==21.3.0
 ipaddress==1.0.23
-lxml==3.4.4
+lxml==4.9.1
 mandrill==1.0.57
 pyOpenSSL==17.5.0
 pyasn1-modules==0.2.8
