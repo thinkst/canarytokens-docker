@@ -42,6 +42,6 @@ six==1.10.0
 twilio==4.4.0
 twill==1.8.0
 typing==3.10.0.0
-urllib3==1.24.3
+urllib3==1.26.5
 wsgiref==0.1.2
 zope.interface==4.6.0
