@@ -7,7 +7,7 @@ PyNaCl==1.4.0
 PyQRCode==1.2.1
 PyYAML==5.4.1
 attrs==21.4.0
-certifi==2021.10.8
+certifi==2022.12.7
 cffi==1.15.1
 chardet==3.0.4
 constantly==15.1.0
