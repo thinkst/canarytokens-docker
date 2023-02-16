@@ -11,7 +11,7 @@ WORKDIR /
 COPY requirements.txt ./
 # removing PIP deprecation banners
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1
-# concatenating RUN commands into a single image layer
+# Keeping base and code installs on separate lines to try cache in Github Actions
 # installing PIP requirements from requirements.txt file
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates \
     wget python-pip unzip osslsigncode gcc python-dev libreadline-dev \
@@ -21,8 +21,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates
     pip install -U setuptools && \
     pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir Twisted==19.10.0 && \
-    wget -O master.zip https://github.com/thinkst/canarytokens/archive/refs/heads/master.zip && \
+    pip install --no-cache-dir Twisted==19.10.0
+RUN wget -O master.zip https://github.com/thinkst/canarytokens/archive/refs/heads/master.zip && \
     unzip master.zip && \
     mv /canarytokens-master/* /srv && \
     rm -rf /canarytokens-master
