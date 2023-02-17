@@ -1,4 +1,5 @@
 ARG ARCH
+ARG CACHE_BUSTER_COMMIT
 
 FROM ${ARCH}ubuntu:18.04 as builder
 
@@ -25,7 +26,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates
 RUN wget -O master.zip https://github.com/thinkst/canarytokens/archive/refs/heads/master.zip && \
     unzip master.zip && \
     mv /canarytokens-master/* /srv && \
-    rm -rf /canarytokens-master
+    rm -rf /canarytokens-master && \
+    echo "${CACHE_BUSTER_COMMIT}"
 # discarding the build-stage image and adding a new one
 # with only the necessary binaries/libraries to run the app
 FROM builder as canary-tokens
