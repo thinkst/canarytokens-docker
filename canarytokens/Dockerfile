@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates
     pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt && \
     pip install --no-cache-dir Twisted==19.10.0
-RUN wget -O master.zip https://github.com/thinkst/canarytokens/archive/refs/heads/master.zip && \
+RUN wget -O master.zip https://github.com/thinkst/canarytokens/archive/refs/heads/master.zip?step=${CACHE_BUSTER_COMMIT} && \
     unzip master.zip && \
     mv /canarytokens-master/* /srv && \
     rm -rf /canarytokens-master && \
