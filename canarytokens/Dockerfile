@@ -1,7 +1,6 @@
 ARG ARCH
 
-FROM ${ARCH}ubuntu:18.04 as builder
-
+FROM --platform=linux/${BUILDARCH} python:3.9@sha256:17e2d81e5757980ee40742d77dd5d3e1a69ad0d6dacb13064e1b018a6664ec72 as builder
 MAINTAINER Marco Slaviero <marco@thinkst.com>
 
 LABEL Description="This image provides the frontend site for Canarytokens" Vendor="Thinkst Applied Research" Version="1.4"
@@ -11,24 +10,22 @@ WORKDIR /
 COPY requirements.txt ./
 # removing PIP deprecation banners
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1
-# Keeping base and code installs on separate lines to try cache in Github Actions
-# installing PIP requirements from requirements.txt file
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates \
-    wget python-pip unzip osslsigncode gcc python-dev libreadline-dev \
-    libncurses5-dev libffi-dev gcc patch make libxslt-dev libxml2-dev \
-    libz-dev fortune-mod fortunes libssl-dev && \
-    rm -rf /var/lib/apt/lists/* && \
-    pip install -U setuptools && \
-    pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir Twisted==19.10.0
 
-ARG CACHE_BUSTER_COMMIT
+# concatenating RUN commands into a single image layer
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        ca-certificates dnsutils fortune-mod fortunes gcc gnupg2 iproute2 jq \
+        libffi-dev libncurses5-dev libreadline-dev libssl-dev libxml2-dev libxslt-dev \
+        libz-dev locales lsb-release lsof make ncdu net-tools openssh-client \
+        osslsigncode patch sudo unzip vim-tiny wget zip zlib1g && \
+    rm -rf /var/lib/apt/lists/* && \
+    python -m pip install poetry
+
 RUN wget -O master.zip https://github.com/thinkst/canarytokens/archive/refs/heads/master.zip && \
     unzip master.zip && \
     mv /canarytokens-master/* /srv && \
     rm -rf /canarytokens-master && \
-    echo "Cache bust commit is ${CACHE_BUSTER_COMMIT}"
+    echo _COMMIT_HASH_ > /COMMIT_SHA
+
 # discarding the build-stage image and adding a new one
 # with only the necessary binaries/libraries to run the app
 FROM builder as canary-tokens
@@ -36,5 +33,6 @@ FROM builder as canary-tokens
 COPY --from=builder /srv /srv
 # setting the working environment
 WORKDIR /srv
+RUN poetry install -E 'twisted web'
 
 CMD echo "Please use the docker-compose setup described at https://github.com/thinkst/canarytokens-docker"
