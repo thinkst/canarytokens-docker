@@ -1,5 +1,4 @@
 ARG ARCH
-ARG CACHE_BUSTER_COMMIT
 
 FROM ${ARCH}ubuntu:18.04 as builder
 
@@ -23,11 +22,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates
     pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt && \
     pip install --no-cache-dir Twisted==19.10.0
-RUN wget -O master.zip https://github.com/thinkst/canarytokens/archive/refs/heads/master.zip?step=${CACHE_BUSTER_COMMIT} && \
+
+ARG CACHE_BUSTER_COMMIT
+RUN wget -O master.zip https://github.com/thinkst/canarytokens/archive/refs/heads/master.zip && \
     unzip master.zip && \
     mv /canarytokens-master/* /srv && \
     rm -rf /canarytokens-master && \
-    echo "${CACHE_BUSTER_COMMIT}"
+    echo "Cache bust commit is ${CACHE_BUSTER_COMMIT}"
 # discarding the build-stage image and adding a new one
 # with only the necessary binaries/libraries to run the app
 FROM builder as canary-tokens
