@@ -34,7 +34,7 @@ RUN wget -O master.zip https://github.com/thinkst/canarytokens/archive/refs/head
 FROM builder as canary-tokens
 # copy the working directory from the previous image into the final image
 COPY --from=builder /srv /srv
-# seting the working environment
+# setting the working environment
 WORKDIR /srv
 
 CMD echo "Please use the docker-compose setup described at https://github.com/thinkst/canarytokens-docker"
