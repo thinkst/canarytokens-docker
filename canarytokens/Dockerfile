@@ -1,13 +1,12 @@
 ARG ARCH
 
+
 FROM --platform=linux/${BUILDARCH} python:3.9@sha256:17e2d81e5757980ee40742d77dd5d3e1a69ad0d6dacb13064e1b018a6664ec72 as builder
 MAINTAINER Marco Slaviero <marco@thinkst.com>
 
 LABEL Description="This image provides the frontend site for Canarytokens" Vendor="Thinkst Applied Research" Version="1.4"
 # setting the current directory
 WORKDIR /
-# uploading PIP requirements file into the base image
-COPY requirements.txt ./
 # removing PIP deprecation banners
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1
 
@@ -19,11 +18,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         osslsigncode patch sudo unzip vim-tiny wget zip zlib1g && \
     rm -rf /var/lib/apt/lists/* && \
     python -m pip install poetry
-
-RUN wget -O master.zip https://github.com/thinkst/canarytokens/archive/refs/heads/master.zip && \
-    unzip master.zip && \
-    mv /canarytokens-master/* /srv && \
-    rm -rf /canarytokens-master && \
+ARG BRANCH=master
+RUN wget -O ${BRANCH}.zip https://github.com/thinkst/canarytokens/archive/refs/heads/${BRANCH}.zip && \
+    unzip ${BRANCH}.zip && \
+    mv /canarytokens-${BRANCH}/* /srv && \
+    rm -rf /canarytokens-${BRANCH} && \
     echo _COMMIT_HASH_ > /COMMIT_SHA
 
 # discarding the build-stage image and adding a new one

@@ -4,38 +4,44 @@ services:
     restart: always
     image: redis
     volumes:
-    - ./data:/data/
+     - ./data:/data/
     container_name: redis
     command: redis-server --appendonly yes --protected-mode no --save 60 1
   frontend:
     restart: always
-    image: thinkst/canarytokens:dev_v3
+    image: thinkst/canarytokens
+    ports:
+     - "8082:8082"
+    build: ./canarytokens/
     env_file:
-     - frontend-v3.env
+     - frontend.env
     volumes:
-    - ./uploads:/uploads/
-    - log-volume:/logs
+     - ./frontend.env:/srv/frontend/frontend.env:ro
+     - ./switchboard.env:/srv/switchboard/switchboard.env:ro
+     - ./uploads:/uploads/
+     - log-volume:/logs
     container_name: frontend
-    command: bash -c "/venv/bin/python -m uvicorn app:app --host 0.0.0.0 --port 8082"
+    command: bash -c "cd frontend; poetry run python -m uvicorn app:app --host 0.0.0.0 --port 8082"
   switchboard:
     restart: always
-    image: thinkst/canarytokens:dev_v3
+    image: thinkst/canarytokens
     ports:
-     - "5354:53"
-     - "5354:53/udp"
      - "25:25"
      - "3306:3306"
+     - "53:5354"
+     - "53:5354/udp"
      - "6443:6443"
+     - "8083:8083"
      - "51820:51820/udp"
     env_file:
-     - switchboard-v3.env
+     - switchboard.env
     volumes:
-      - ./frontend-v3.env:/frontend.env:ro
-      - ./switchboard-v3.env:/switchboard.env:ro
-      - ./uploads:/uploads/
-      - log-volume:/logs
+     - ./frontend.env:/srv/frontend/frontend.env:ro
+     - ./switchboard.env:/srv/switchboard/switchboard.env:ro
+     - ./uploads:/uploads/
+     - log-volume:/logs
     container_name: switchboard
-    command: bash -c "rm -f switchboard.pid; /venv/bin/twistd -noy switchboard.tac --pidfile=switchboard.pid"
+    command: bash -c "cd switchboard; rm -f switchboard.pid; poetry run twistd -noy switchboard.tac --pidfile=switchboard.pid"
   nginx:
     restart: always
     image: thinkst/certbot-nginx
@@ -44,11 +50,9 @@ services:
      - "80:80"
      - "443:443"
     depends_on:
-      - "frontend"
-      - "switchboard"
+     - "frontend"
+     - "switchboard"
     container_name: nginx
-    env_file:
-     - certbot.env
     volumes:
      - /etc/letsencrypt/:/etc/letsencrypt/
 volumes:
