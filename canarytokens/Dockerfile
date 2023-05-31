@@ -18,10 +18,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/* && \
     python -m pip install poetry
 ARG BRANCH=master
-RUN wget -O ${BRANCH}.zip https://github.com/thinkst/canarytokens/archive/refs/heads/${BRANCH}.zip && \
-    unzip ${BRANCH}.zip && \
-    mv /canarytokens-${BRANCH}/* /srv && \
-    rm -rf /canarytokens-${BRANCH} && \
+RUN wget -O archive.zip https://github.com/thinkst/canarytokens/archive/refs/heads/${BRANCH}.zip && \
+    unzip archive.zip && \
+    mv /canarytokens-*/* /srv && \
+    rm -rf /canarytokens-* && \
     echo _COMMIT_HASH_ > /COMMIT_SHA
 
 # discarding the build-stage image and adding a new one
