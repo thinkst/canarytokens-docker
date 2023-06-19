@@ -2,7 +2,7 @@ version: '2'
 services:
   redis:
     restart: always
-    image: redis
+    image: redis:7.0.10
     volumes:
     - ./data:/data/
     container_name: redis
