@@ -9,7 +9,7 @@ services:
     command: redis-server --appendonly yes --protected-mode no --save 60 1
   frontend:
     restart: always
-    image: thinkst/canarytokens:v3
+    image: thinkst/canarytokens
     ports:
      - "8082:8082"
     build: ./canarytokens/
@@ -24,7 +24,7 @@ services:
     command: bash -c "cd frontend; poetry run python -m uvicorn app:app --host 0.0.0.0 --port 8082 --log-config log.ini"
   switchboard:
     restart: always
-    image: thinkst/canarytokens:v3
+    image: thinkst/canarytokens
     ports:
      - "25:25"
      - "3306:3306"
