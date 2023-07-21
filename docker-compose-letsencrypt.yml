@@ -9,8 +9,7 @@ services:
     command: redis-server --appendonly yes --protected-mode no --save 60 1
   frontend:
     restart: always
-    build: ./canarytokens/
-    image: thinkst/canarytokens
+    image: thinkst/canarytokens:v2_latest
     links:
      - redis
     env_file:
@@ -21,9 +20,8 @@ services:
     container_name: frontend
     command: bash -c "rm -f frontend.pid; twistd -noy frontend.tac --pidfile=frontend.pid"
   switchboard:
-    build: ./canarytokens/
     restart: always
-    image: thinkst/canarytokens
+    image: thinkst/canarytokens:v2_latest
     ports:
      - "53:53"
      - "53:53/udp"
@@ -42,7 +40,6 @@ services:
   nginx:
     restart: always
     image: thinkst/certbot-nginx
-    build: ./certbot-nginx/
     ports:
      - "80:80"
      - "443:443"
