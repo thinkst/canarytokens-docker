@@ -23,6 +23,7 @@ Migrating to v3
 * And correspondingly: `docker compose -f docker-compose-v3.yml up -d` 
   or `docker compose -f docker-compose-v3-letsencrypt.yml up -d`
 
+NB: The updated `canarytokens-docker` repo no longer has the Dockerfile for Canarytokens v2, so running that requires using the tagged image `thinkst/canarytokens:v2_latest`.
 
 Setup (in Ubuntu)
 -----------------
