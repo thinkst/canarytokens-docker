@@ -12,7 +12,6 @@ services:
     image: thinkst/canarytokens
     ports:
      - "8082:8082"
-    build: ./canarytokens/
     env_file:
      - frontend.env
     volumes:
@@ -45,7 +44,6 @@ services:
   nginx:
     restart: always
     image: thinkst/certbot-nginx
-    build: ./certbot-nginx/
     ports:
      - "80:80"
      - "443:443"
