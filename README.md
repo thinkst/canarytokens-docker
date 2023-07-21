@@ -13,29 +13,15 @@ Prerequisites
 * At least one domain name. If you want to enable PDF-opening tracking, at least two domains.
 * Internet-facing Docker host. You can [install Docker on a Linux host](https://docs.docker.com/installation/) quickly.
 
-What's new?
------------
-We are going to track some new features/additions here so that it is quick and easy to see what has been recently added.
-
-- we now have the capability of sending error logs to a webhook of your choice, hopefully alerting you
-or your team to the failures as opposed to these errors only living in a log file.
-Simply supply the corresponding webhook URI in the `ERROR_LOG_WEBHOOK` value in your switchboard.env file. (2021-04-09)
-
-- we've renamed the distributed .env files to ```switchboard.env.dist``` and ```frontend.env.dist```. This ensures that your local
-  configuration doesn't get blown away when you pull changes from the repo. (We still use ```switchboard.env``` and ```frontend.env```
-  for the config, it just means that new clones of the repo require the users to copy/rename the dist files)
-
-- we have added an extra `switchboard.env` called `CANARY_IPINFO_API_KEY`. This allows you to use your ipinfo.io API key if you
-  want to (keep in mind ipinfo.io does have a free tier of up to 1000 requests a day).
-
-- we now have slack support. When you supply a webhook, you simply supply your slack webhook URL. (Thanks to @shortstack).
-
-- we have added a new environment variable to `frontend.env` called `CANARY_AWSID_URL` which allows you to specify a private or
-  different URL for the AWS ID token. This means you can easily change between accounts. (2018-10-17)
-
-- if you intend to build the image to be run on another system with different architecture, you can build the images with
-  `docker-compose build --build-arg ARCH=<target arch>/`, noting the forward slash at the end of the argument. The image will not build
-  correctly if this is not included.
+Migrating to v3
+---------------
+* If running on an older version of Docker, you will need to [upgrade](https://docs.docker.com/engine/install/). 
+* `docker-compose` no longer works, and you will need to run `docker network prune` before bringing up your Canarytokens instance with `docker compose`. Canarytokens v2 will still work.
+* Pull the latest version of the `canarytokens-docker` repo.
+* Depending on whether you're using letsencrypt: `docker compose -f docker-compose.yml down` 
+  or `docker compose -f docker-compose-letsencrypt.yml down`
+* And correspondingly: `docker compose -f docker-compose-v3.yml up -d` 
+  or `docker compose -f docker-compose-v3-letsencrypt.yml up -d`
 
 
 Setup (in Ubuntu)
@@ -109,11 +95,11 @@ CANARY_WG_PRIVATE_KEY_SEED=vk/GD+frlhve/hDTTSUvqpQ/WsQtioKAri0Rt5mg7dw=
 ```
 * Finally, download and initiate the images:
 ```
-$ docker-compose up
+$ docker compose up
 ```
 * The front end and switchboard will now be running in the foreground. The front end is accessible at http://example1.com/generate. If you wish to run this in the background, you may use
 ```
-$ docker-compose up -d
+$ docker compose up -d
 ```
 
 NOTE: If you only own one domain, and would like to use pdf tokens, you can use subdomains for `CANARY_NXDOMAINS`. Using `example.com` as our domain, you can set `CANARY_NXDOMAINS` to `nx.example.com`. Then log into your DNS manager console (where you can edit your domain DNS records) and add an NS record of `nx.example.com` mapping to `example.com`.
@@ -141,10 +127,10 @@ MY_DOMAIN_NAME=example.com
 
 EMAIL_ADDRESS=jay@example.com
 ```
-* Now when you want to bring up your server, you will use ```docker-compose -f docker-compose-letsencrypt.yml up``` which will run the
+* Now when you want to bring up your server, you will use ```docker compose -f docker-compose-letsencrypt.yml up``` which will run the
 server in the foreground so you can make sure everything gets started alright.
 
-* If everything is running, you may want to CTRL+C, run ```docker-compose -f docker-compose-letsencrypt.yml down``` to get to a clean slate, and then rerun ```docker-compose -f docker-compose-letsencrypt.yml up -d``` with the added ```-d``` to run the server in the background (in daemon mode)
+* If everything is running, you may want to CTRL+C, run ```docker compose -f docker-compose-letsencrypt.yml down``` to get to a clean slate, and then rerun ```docker compose -f docker-compose-letsencrypt.yml up -d``` with the added ```-d``` to run the server in the background (in daemon mode)
 
 * Please keep in mind that using the HTTPS method will use the email you specified and the domain name to register the certificate. You can read about the let's encrypt process (using cerbot) over [here](https://certbot.eff.org/lets-encrypt/ubuntuxenial-nginx). The process involves verifying that you are the owner of the domain you have specified and registering you with let's encrypt.
 
@@ -170,6 +156,30 @@ server {
 ```
 COPY .htpasswd /etc/nginx/.htpasswd
 ```
-7) rebuild the images using `docker-compose build`, restart your docker containers, and enjoy!
+7) rebuild the images using `docker compose build`, restart your docker containers, and enjoy!
 
 Thanks, @mamisano for catching a silly issue using the above 🙏
+
+What's new?
+-----------
+We are going to track some new features/additions here so that it is quick and easy to see what has been recently added.
+
+- we now have the capability of sending error logs to a webhook of your choice, hopefully alerting you
+or your team to the failures as opposed to these errors only living in a log file.
+Simply supply the corresponding webhook URI in the `ERROR_LOG_WEBHOOK` value in your switchboard.env file. (2021-04-09)
+
+- we've renamed the distributed .env files to ```switchboard.env.dist``` and ```frontend.env.dist```. This ensures that your local
+  configuration doesn't get blown away when you pull changes from the repo. (We still use ```switchboard.env``` and ```frontend.env```
+  for the config, it just means that new clones of the repo require the users to copy/rename the dist files)
+
+- we have added an extra `switchboard.env` called `CANARY_IPINFO_API_KEY`. This allows you to use your ipinfo.io API key if you
+  want to (keep in mind ipinfo.io does have a free tier of up to 1000 requests a day).
+
+- we now have slack support. When you supply a webhook, you simply supply your slack webhook URL. (Thanks to @shortstack).
+
+- we have added a new environment variable to `frontend.env` called `CANARY_AWSID_URL` which allows you to specify a private or
+  different URL for the AWS ID token. This means you can easily change between accounts. (2018-10-17)
+
+- if you intend to build the image to be run on another system with different architecture, you can build the images with
+  `docker compose build --build-arg ARCH=<target arch>/`, noting the forward slash at the end of the argument. The image will not build
+  correctly if this is not included.

@@ -33,4 +33,4 @@ COPY --from=builder /srv /srv
 WORKDIR /srv
 RUN poetry install -E 'twisted web'
 
-CMD echo "Please use the docker-compose setup described at https://github.com/thinkst/canarytokens-docker"
+CMD echo "Please use the docker compose setup described at https://github.com/thinkst/canarytokens-docker"
