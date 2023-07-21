@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates
     rm -rf /var/lib/apt/lists/* && \
     pip install -U setuptools && \
     pip install --upgrade pip && \
+    pip install --no-cache-dir Cython==0.29.36 && \
     pip install --no-cache-dir -r requirements.txt && \
     pip install --no-cache-dir Twisted==19.10.0
 
@@ -37,4 +38,4 @@ COPY --from=builder /srv /srv
 # setting the working environment
 WORKDIR /srv
 
-CMD echo "Please use the docker-compose setup described at https://github.com/thinkst/canarytokens-docker"
+CMD echo "Please use the docker compose setup described at https://github.com/thinkst/canarytokens-docker"
