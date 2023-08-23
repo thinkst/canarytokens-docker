@@ -159,23 +159,23 @@ server in the foreground so you can make sure everything gets started alright.
 
 You may follow these steps if you wish to have a public-facing canarytokens site but would like some basic auth to access it.
 
-1) `git clone https://github.com/thinkst/canarytokens-docker.git`
-2) `cd canarytokens-docker/nginx` or if you plan on using HTTPS, `cd canarytokens-docker/certbot-nginx`
-3) `sudo htpasswd -c .htpasswd user` where `user` can be any username you would like to use.
-4) `sudo chown <user>:<user> .htpasswd` where `user` is the local linux user
-5) edit the appropriate `nginx.conf` and
-```
-server {
-    ...
-    location ~* (/generate|/manage|/download|/history|/settings|/resources|/legal).* {
-        auth_basic           "Basic Auth Restricted Canrytokens"; <---- ADD
-        auth_basic_user_file /etc/nginx/.htpasswd;                 <---- ADD
-```
+1. `git clone https://github.com/thinkst/canarytokens-docker.git`
+2. `cd canarytokens-docker/nginx` or if you plan on using HTTPS, `cd canarytokens-docker/certbot-nginx`
+3. `sudo htpasswd -c .htpasswd user` where `user` can be any username you would like to use.
+4. `sudo chown <user>:<user> .htpasswd` where `user` is the local linux user
+5. edit the appropriate `nginx.conf` and
+  ```
+  server {
+      ...
+      location ~* (/generate|/manage|/download|/history|/settings|/resources|/legal).* {
+          auth_basic           "Basic Auth Restricted Canrytokens"; <---- ADD
+          auth_basic_user_file /etc/nginx/.htpasswd;                 <---- ADD
+  ```
 6) edit the appropriate `Dockerfile` and add below `COPY nginx.conf ...`
-```
-COPY .htpasswd /etc/nginx/.htpasswd
-```
-7) rebuild the images using `docker compose build`, restart your docker containers, and enjoy!
+  ```
+  COPY .htpasswd /etc/nginx/.htpasswd
+  ```
+7) rebuild the images using `docker compose build`, or `docker compose -f docker-compose-letsencrypt.yml build` restart your docker containers, and enjoy!
 
 Thanks, @mamisano for catching a silly issue using the above 🙏
 
