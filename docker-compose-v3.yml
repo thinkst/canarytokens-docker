@@ -46,7 +46,7 @@ services:
   nginx:
     restart: always
     image: thinkst/canarytokens_nginx
-    build: ./certbot-nginx
+    build: ./nginx
     ports:
      - "80:80"
     depends_on:
