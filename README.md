@@ -161,14 +161,14 @@ You may follow these steps if you wish to have a public-facing canarytokens site
 
 1. `git clone https://github.com/thinkst/canarytokens-docker.git`
 2. Navigate to the nginx folder:
-  - for HTTP:
-  ```bash
-  cd canarytokens-docker/nginx
-  ```
-  - for HTTPS:
-  ```bash
-  cd canarytokens-docker/certbot-nginx
-  ```
+    - for HTTP:
+    ```bash
+    cd canarytokens-docker/nginx
+    ```
+    - for HTTPS:
+    ```bash
+    cd canarytokens-docker/certbot-nginx
+    ```
 3. `sudo htpasswd -c .htpasswd user` where `user` can be any username you would like to use.
 4. `sudo chown <user>:<user> .htpasswd` where `user` is the local linux user
 5. edit the appropriate `nginx.conf` and
@@ -184,14 +184,14 @@ You may follow these steps if you wish to have a public-facing canarytokens site
   COPY .htpasswd /etc/nginx/.htpasswd
   ```
 7. rebuild the images using:
-  - for HTTP:
-  ```bash
-  docker compose build
-  ```
-  - for HTTPS:
-  ```bash
-  docker compose -f docker-compose-letsencrypt.yml build
-  ```
+    - for HTTP:
+    ```bash
+    docker compose build
+    ```
+    - for HTTPS:
+    ```bash
+    docker compose -f docker-compose-letsencrypt.yml build
+    ```
   restart your docker containers, and enjoy!
 
 Thanks, @mamisano for catching a silly issue using the above 🙏
