@@ -10,6 +10,7 @@ services:
   frontend:
     restart: always
     image: thinkst/canarytokens
+    build: ./canarytokens
     ports:
      - "8082:8082"
     env_file:
@@ -24,6 +25,7 @@ services:
   switchboard:
     restart: always
     image: thinkst/canarytokens
+    build: ./canarytokens
     ports:
      - "25:25"
      - "3306:3306"
@@ -44,6 +46,7 @@ services:
   nginx:
     restart: always
     image: thinkst/canarytokens_nginx
+    build: ./nginx
     ports:
      - "80:80"
     depends_on:
