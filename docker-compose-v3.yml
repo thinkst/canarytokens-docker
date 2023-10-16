@@ -52,6 +52,8 @@ services:
     depends_on:
      - "frontend"
      - "switchboard"
+    volumes:
+     - ./nginx/conf.d:/etc/nginx/conf.d/
     container_name: nginx
     command: /usr/sbin/nginx -c /etc/nginx/nginx.conf -g "daemon off;"
 volumes:

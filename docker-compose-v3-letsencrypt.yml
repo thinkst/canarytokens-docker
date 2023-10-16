@@ -58,5 +58,6 @@ services:
      - certbot.env
     volumes:
      - /etc/letsencrypt/:/etc/letsencrypt/
+     - ./nginx/conf.d:/etc/nginx/conf.d/
 volumes:
   log-volume:

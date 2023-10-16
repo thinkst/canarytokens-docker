@@ -9,5 +9,6 @@ RUN apt-get update &&  apt-get install -y \
   python3-certbot-nginx
 
 COPY nginx.conf /etc/nginx/nginx.conf
+COPY conf.d/blocked_tokens.conf /etc/nginx/conf.d/blocked_tokens.conf
 COPY start.sh /
 CMD /start.sh
