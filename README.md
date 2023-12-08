@@ -33,15 +33,15 @@ to github@thinkst.com.
 
 ## Migrating to v3
 
+* Depending on whether you're using letsencrypt: `docker compose -f docker-compose.yml down`
+  or `docker compose -f docker-compose-letsencrypt.yml down`
 * If running on an older version of Docker, you will need to [upgrade](https://docs.docker.com/engine/install/).
 * `docker-compose` no longer works, and you will need to run `docker network prune` before bringing up your Canarytokens instance with `docker compose`. Canarytokens v2 will still work.
 * Pull the latest version of the `canarytokens-docker` repo.
-* Depending on whether you're using letsencrypt: `docker compose -f docker-compose.yml down`
-  or `docker compose -f docker-compose-letsencrypt.yml down`
-* And correspondingly: `docker compose -f docker-compose-v3.yml up -d`
-  or `docker compose -f docker-compose-v3-letsencrypt.yml up -d`
+* And correspondingly: `docker compose -f docker-compose.yml up -d`
+  or `docker compose -f docker-compose-letsencrypt.yml up -d`
 
-NB: The updated `canarytokens-docker` repo no longer has the Dockerfile for Canarytokens v2, so running that requires using the tagged image `thinkst/canarytokens:v2_latest`.
+NB: The updated `canarytokens-docker` repo no longer has the Dockerfile for Canarytokens v2, so running that requires using the tagged image `thinkst/canarytokens:v2_latest`. We highly recommened moving to v3. Please contact us if you battling with the migration.
 
 ## Setup (in Ubuntu)
 
