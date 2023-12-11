@@ -1,53 +1,59 @@
-version: '2'
+version: '3'
 services:
   redis:
     restart: always
     image: redis:7.0.10
     volumes:
-    - ./data:/data/
+     - ./data:/data/
     container_name: redis
     command: redis-server --appendonly yes --protected-mode no --save 60 1
   frontend:
     restart: always
-    image: thinkst/canarytokens:v2_latest
+    image: thinkst/canarytokens
     build: ./canarytokens
-    links:
-     - redis
+    ports:
+     - "8082:8082"
     env_file:
      - frontend.env
     volumes:
-    - ./uploads:/uploads/
-    - log-volume:/logs
+     - ./frontend.env:/srv/frontend/frontend.env:ro
+     - ./switchboard.env:/srv/switchboard/switchboard.env:ro
+     - ./uploads:/uploads/
+     - log-volume:/logs
     container_name: frontend
-    command: bash -c "rm -f frontend.pid; twistd -noy frontend.tac --pidfile=frontend.pid"
+    command: bash -c "cd frontend; poetry run python -m uvicorn app:app --host 0.0.0.0 --port 8082 --log-config log.ini"
   switchboard:
     restart: always
-    image: thinkst/canarytokens:v2_latest
+    image: thinkst/canarytokens
     build: ./canarytokens
     ports:
-     - "53:53"
-     - "53:53/udp"
      - "25:25"
      - "3306:3306"
+     - "53:5354"
+     - "53:5354/udp"
      - "6443:6443"
+     - "8083:8083"
      - "51820:51820/udp"
-    links:
-     - redis
     env_file:
      - switchboard.env
-    volumes_from:
-    - frontend
+    volumes:
+     - ./frontend.env:/srv/frontend/frontend.env:ro
+     - ./switchboard.env:/srv/switchboard/switchboard.env:ro
+     - ./uploads:/uploads/
+     - log-volume:/logs
     container_name: switchboard
-    command: bash -c "rm -f switchboard.pid; twistd -noy switchboard.tac --pidfile=switchboard.pid"
+    command: bash -c "cd switchboard; rm -f switchboard.pid; poetry run twistd -noy switchboard.tac --pidfile=switchboard.pid"
   nginx:
     restart: always
     image: thinkst/canarytokens_nginx
     build: ./nginx
     ports:
      - "80:80"
-    links:
-     - frontend
-     - switchboard
+    depends_on:
+     - "frontend"
+     - "switchboard"
+    volumes:
+     - ./nginx/conf.d:/etc/nginx/conf.d/
     container_name: nginx
     command: /usr/sbin/nginx -c /etc/nginx/nginx.conf -g "daemon off;"
 volumes:
