@@ -1,0 +1,33 @@
+include:
+  - docker-compose-letsencrypt.yml
+services:
+  redis:
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: eu-west-1
+        awslogs-group: canarytokens-dev
+        awslogs-stream: redis
+  frontend:
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: eu-west-1
+        awslogs-group: canarytokens-dev
+        awslogs-stream: frontend
+  switchboard:
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: eu-west-1
+        awslogs-group: canarytokens-dev
+        awslogs-stream: switchboard
+  nginx:
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d/
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: eu-west-1
+        awslogs-group: canarytokens-dev
+        awslogs-stream: nginx
