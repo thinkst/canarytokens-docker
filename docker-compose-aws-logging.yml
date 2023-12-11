@@ -1,7 +1,9 @@
-include:
-  - docker-compose.yml
+version: '3'
 services:
   redis:
+    extends:
+      file: common-services.yml
+      service: redis_common
     logging:
       driver: awslogs
       options:
@@ -9,6 +11,10 @@ services:
         awslogs-group: canarytokens-dev
         awslogs-stream: redis
   frontend:
+    extends:
+      file: common-services.yml
+      service: frontend_common
+    container_name: frontend
     logging:
       driver: awslogs
       options:
@@ -16,6 +22,10 @@ services:
         awslogs-group: canarytokens-dev
         awslogs-stream: frontend
   switchboard:
+    extends:
+      file: common-services.yml
+      service: switchboard_common
+    container_name: switchboard
     logging:
       driver: awslogs
       options:
@@ -23,9 +33,14 @@ services:
         awslogs-group: canarytokens-dev
         awslogs-stream: switchboard
   nginx:
+    extends:
+      file: common-services.yml
+      service: nginx_common
     logging:
       driver: awslogs
       options:
         awslogs-region: eu-west-1
         awslogs-group: canarytokens-dev
         awslogs-stream: nginx
+volumes:
+  log-volume:
