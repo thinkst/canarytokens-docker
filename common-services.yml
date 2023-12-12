@@ -1,0 +1,76 @@
+version: '3'
+services:
+  redis_common:
+    restart: always
+    image: redis:7.0.10
+    volumes:
+     - ./data:/data/
+    container_name: redis
+    command: redis-server --appendonly yes --protected-mode no --save 60 1
+  frontend_common:
+    restart: always
+    image: thinkst/canarytokens
+    build: ./canarytokens
+    ports:
+     - "8082:8082"
+    env_file:
+     - frontend.env
+    volumes:
+     - ./frontend.env:/srv/frontend/frontend.env:ro
+     - ./switchboard.env:/srv/switchboard/switchboard.env:ro
+     - ./uploads:/uploads/
+     - log-volume:/logs
+    container_name: frontend
+    command: bash -c "cd frontend; poetry run python -m uvicorn app:app --host 0.0.0.0 --port 8082"
+  switchboard_common:
+    restart: always
+    image: thinkst/canarytokens
+    build: ./canarytokens
+    ports:
+     - "25:2500"
+     - "3306:3306"
+     - "53:5354"
+     - "53:5354/udp"
+     - "6443:6443"
+     - "8083:8083"
+     - "51820:51820/udp"
+    env_file:
+     - switchboard.env
+    volumes:
+     - ./frontend.env:/srv/frontend/frontend.env:ro
+     - ./switchboard.env:/srv/switchboard/switchboard.env:ro
+     - ./uploads:/uploads/
+     - log-volume:/logs
+    container_name: switchboard
+    command: bash -c "cd switchboard; rm -f switchboard.pid; poetry run twistd -noy switchboard.tac --pidfile=switchboard.pid"
+  nginx_common_certbot:
+    restart: always
+    image: thinkst/certbot-nginx
+    build: ./certbot-nginx
+    ports:
+     - "80:80"
+     - "443:443"
+    depends_on:
+     - "frontend"
+     - "switchboard"
+    container_name: nginx
+    env_file:
+     - certbot.env
+    volumes:
+     - /etc/letsencrypt/:/etc/letsencrypt/
+     - ./nginx/conf.d:/etc/nginx/conf.d/
+  nginx_common:
+    restart: always
+    image: thinkst/canarytokens_nginx
+    build: ./nginx
+    ports:
+     - "80:80"
+    depends_on:
+     - "frontend"
+     - "switchboard"
+    volumes:
+     - ./nginx/conf.d:/etc/nginx/conf.d/
+    container_name: nginx
+    command: /usr/sbin/nginx -c /etc/nginx/nginx.conf -g "daemon off;"
+volumes:
+  log-volume:
