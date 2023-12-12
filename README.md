@@ -41,7 +41,9 @@ to github@thinkst.com.
 * And correspondingly: `docker compose -f docker-compose.yml up -d`
   or `docker compose -f docker-compose-letsencrypt.yml up -d`
 
-NB: The updated `canarytokens-docker` repo no longer has the Dockerfile for Canarytokens v2, so running that requires using the tagged image `thinkst/canarytokens:v2_latest`. We highly recommened moving to v3. Please contact us if you battling with the migration.
+
+NB: The updated `canarytokens-docker` repo no longer has the Dockerfile for Canarytokens v2, so running that requires using the tagged image `thinkst/canarytokens:v2_latest`. We highly recommend moving to v3. Please contact us if you're battling with the migration.
+
 
 ## Setup (in Ubuntu)
 
@@ -54,7 +56,7 @@ $ cd canarytokens-docker
 ```
 * Install Docker compose (if not already present):
 ```
-$ sudo apt-get install python-pip python-dev
+$ sudo apt-get install python3-pip python3-dev
 $ sudo pip install -U docker-compose
 #if this breaks with PyYAML errors, install the libyaml development package
 # sudo apt-get install libyaml-dev
