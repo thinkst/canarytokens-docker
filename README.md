@@ -202,7 +202,7 @@ Thanks, @mamisano for catching a silly issue using the above 🙏
 
 We are going to track some new features/additions here so that it is quick and easy to see what has been recently added.
 
-- we have moved the "What's new?" to Github Discussions. Go check it.
+- we have moved the "What's new?" to Github Discussions. Check it out [here](https://github.com/thinkst/canarytokens-docker/discussions).
 
 - we now have the capability of sending error logs to a webhook of your choice, hopefully alerting you
 or your team to the failures as opposed to these errors only living in a log file.
