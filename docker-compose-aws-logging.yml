@@ -7,8 +7,8 @@ services:
     logging:
       driver: awslogs
       options:
-        awslogs-region: eu-west-1
-        awslogs-group: canarytokens-dev
+        awslogs-region: ${CANARYTOKENS_LOGGING_REGION:-eu-west-1}
+        awslogs-group: ${CANARYTOKENS_LOGGING_GROUP:-canarytokens}
         awslogs-stream: redis
   frontend:
     extends:
@@ -18,8 +18,8 @@ services:
     logging:
       driver: awslogs
       options:
-        awslogs-region: eu-west-1
-        awslogs-group: canarytokens-dev
+        awslogs-region: ${CANARYTOKENS_LOGGING_REGION:-eu-west-1}
+        awslogs-group: ${CANARYTOKENS_LOGGING_GROUP:-canarytokens}
         awslogs-stream: frontend
   switchboard:
     extends:
@@ -29,8 +29,8 @@ services:
     logging:
       driver: awslogs
       options:
-        awslogs-region: eu-west-1
-        awslogs-group: canarytokens-dev
+        awslogs-region: ${CANARYTOKENS_LOGGING_REGION:-eu-west-1}
+        awslogs-group: ${CANARYTOKENS_LOGGING_GROUP:-canarytokens}
         awslogs-stream: switchboard
   nginx:
     extends:
@@ -39,8 +39,8 @@ services:
     logging:
       driver: awslogs
       options:
-        awslogs-region: eu-west-1
-        awslogs-group: canarytokens-dev
+        awslogs-region: ${CANARYTOKENS_LOGGING_REGION:-eu-west-1}
+        awslogs-group: ${CANARYTOKENS_LOGGING_GROUP:-canarytokens}
         awslogs-stream: nginx
 volumes:
   log-volume:
