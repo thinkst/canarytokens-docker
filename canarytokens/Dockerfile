@@ -31,6 +31,6 @@ FROM builder as canary-tokens
 COPY --from=builder /srv /srv
 # setting the working environment
 WORKDIR /srv
-RUN poetry install -E 'twisted web'
+RUN poetry lock --no-update && poetry install -E 'twisted web'
 
 CMD echo "Please use the docker compose setup described at https://github.com/thinkst/canarytokens-docker"
