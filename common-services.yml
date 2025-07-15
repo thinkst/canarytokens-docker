@@ -21,7 +21,7 @@ services:
      - ./uploads:/uploads/
      - log-volume:/logs
     container_name: frontend
-    command: bash -c "cd frontend; poetry run python -m uvicorn app:app --host 0.0.0.0 --port 8082"
+    command: bash -c "cd frontend; poetry run python -m uvicorn app:app --host 0.0.0.0 --port 8082 --workers 4"
   switchboard_common:
     restart: always
     image: thinkst/canarytokens
