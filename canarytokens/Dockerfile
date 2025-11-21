@@ -1,6 +1,6 @@
 ARG ARCH=amd64
 
-FROM --platform=linux/${ARCH} python:3.9 as builder
+FROM --platform=linux/${ARCH} python:3.13 AS builder
 MAINTAINER Marco Slaviero <marco@thinkst.com>
 
 LABEL Description="This image provides the frontend site for Canarytokens" Vendor="Thinkst Applied Research" Version="1.4"
