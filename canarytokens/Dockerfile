@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         osslsigncode patch sudo unzip vim-tiny wget zip zlib1g && \
     rm -rf /var/lib/apt/lists/* && \
     python -m pip install poetry
-ARG BRANCH=dev2
+ARG BRANCH=dev
 RUN wget -O archive.zip https://github.com/thinkst/canarytokens/archive/refs/heads/${BRANCH}.zip && \
     unzip archive.zip && \
     mv /canarytokens-*/* /srv && \
