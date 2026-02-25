@@ -29,6 +29,7 @@ FROM node:22 AS frontend-builder
 ARG GOOGLE_MAPS_API_KEY
 ARG CLOUDFLARE_TURNSTILE_SITE_KEY
 ARG GITHUB_SHA
+ARG USE_CACHE_MOUNTS=false
 
 WORKDIR /build
 COPY --from=builder /archive.zip /build/archive.zip
@@ -38,7 +39,8 @@ RUN unzip archive.zip && \
 WORKDIR /build/frontend
 
 # Install dependencies
-RUN npm ci
+RUN --mount=type=cache,target=/root/.npm,enabled=${USE_CACHE_MOUNTS} \
+    npm ci --cache /root/.npm
 
 # Create .env file with build-time variables
 RUN touch .env && \
@@ -53,6 +55,8 @@ RUN npm run build
 # discarding the build-stage image and adding a new one
 # with only the necessary binaries/libraries to run the app
 FROM builder AS canary-tokens
+ARG USE_CACHE_MOUNTS=false
+
 # copy the working directory from the previous image into the final image
 COPY --from=builder /srv /srv
 
@@ -62,6 +66,8 @@ COPY --from=frontend-builder /build/dist /srv/dist
 
 # setting the working environment
 WORKDIR /srv
-RUN poetry install -E 'twisted web'
+RUN --mount=type=cache,target=/root/.cache/pip,enabled=${USE_CACHE_MOUNTS} \
+    --mount=type=cache,target=/root/.cache/pypoetry,enabled=${USE_CACHE_MOUNTS} \
+    poetry install -E 'twisted web'
 
 CMD echo "Please use the docker compose setup described at https://github.com/thinkst/canarytokens-docker"
