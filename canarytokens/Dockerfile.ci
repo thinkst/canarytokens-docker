@@ -10,12 +10,15 @@ WORKDIR /
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1
 
 # concatenating RUN commands into a single image layer
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates dnsutils fortune-mod fortunes gcc gnupg2 iproute2 jq \
         libffi-dev libncurses5-dev libreadline-dev libssl-dev libxml2-dev libxslt-dev \
         libz-dev locales lsb-release lsof make ncdu net-tools openssh-client \
         osslsigncode patch sudo unzip vim-tiny wget zip zlib1g && \
-    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /var/lib/apt/lists/*
+RUN --mount=type=cache,target=/root/.cache/pip \
     python -m pip install poetry
 ARG BRANCH=master
 RUN wget -O archive.zip https://github.com/thinkst/canarytokens/archive/refs/heads/${BRANCH}.zip && \
