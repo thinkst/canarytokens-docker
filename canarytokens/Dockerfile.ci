@@ -71,6 +71,6 @@ FROM builder AS canary-tokens
 
 # copy the built frontend assets
 RUN rm -rf /srv/dist
-COPY --from=frontend-builder /build/frontend/dist /srv/dist
+COPY --from=frontend-builder /build/dist /srv/dist
 
 CMD echo "Please use the docker compose setup described at https://github.com/thinkst/canarytokens-docker"
