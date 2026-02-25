@@ -29,7 +29,6 @@ FROM node:22 AS frontend-builder
 ARG GOOGLE_MAPS_API_KEY
 ARG CLOUDFLARE_TURNSTILE_SITE_KEY
 ARG GITHUB_SHA
-ARG USE_CACHE_MOUNTS=false
 
 WORKDIR /build
 COPY --from=builder /archive.zip /build/archive.zip
@@ -55,7 +54,6 @@ RUN npm run build
 # discarding the build-stage image and adding a new one
 # with only the necessary binaries/libraries to run the app
 FROM builder AS canary-tokens
-ARG USE_CACHE_MOUNTS=false
 
 # copy the working directory from the previous image into the final image
 COPY --from=builder /srv /srv
