@@ -7,28 +7,22 @@ WORKDIR /
 # removing PIP deprecation banners
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1
 
-ARG BRANCH=master
 ARG GITHUB_SHA
-ARG TARGETPLATFORM
 
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apt-${TARGETPLATFORM} \
-    apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates dnsutils fortune-mod fortunes gcc gnupg2 iproute2 jq \
         libffi-dev libncurses5-dev libreadline-dev libssl-dev libxml2-dev libxslt-dev \
         libz-dev locales lsb-release lsof make ncdu net-tools openssh-client \
         osslsigncode patch sudo unzip vim-tiny wget zip zlib1g && \
     rm -rf /var/lib/apt/lists/*
-RUN --mount=type=cache,target=/root/.cache/pip,id=pip-${TARGETPLATFORM}\
-    python -m pip install poetry==2.2.1
+RUN python -m pip install poetry==2.2.1
 
 # setting the working environment
 WORKDIR /srv
 
 COPY pyproject.toml poetry.lock ./
 
-RUN --mount=type=cache,target=/root/.cache/pip,id=pip-${TARGETPLATFORM} \
-    --mount=type=cache,target=/root/.cache/pypoetry,id=poetry-${TARGETPLATFORM} \
-    poetry install -E 'twisted web' --no-root
+RUN poetry install -E 'twisted web' --no-root
 
 COPY . .
 
@@ -41,14 +35,12 @@ FROM node:22 AS frontend-builder
 ARG GOOGLE_MAPS_API_KEY
 ARG CLOUDFLARE_TURNSTILE_SITE_KEY
 ARG GITHUB_SHA
-ARG TARGETPLATFORM
 
 WORKDIR /build/frontend
 COPY frontend_vue/package*.json ./
 
 
-RUN --mount=type=cache,target=/root/.npm,id=npm-${TARGETPLATFORM} \
-    npm ci --cache /root/.npm
+RUN npm ci
 
 COPY frontend_vue/ ./
 
