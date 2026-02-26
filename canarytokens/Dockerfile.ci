@@ -7,8 +7,6 @@ WORKDIR /
 # removing PIP deprecation banners
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1
 
-ARG GITHUB_SHA
-
 RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates dnsutils fortune-mod fortunes gcc gnupg2 iproute2 jq \
         libffi-dev libncurses5-dev libreadline-dev libssl-dev libxml2-dev libxslt-dev \
@@ -28,13 +26,11 @@ COPY . .
 
 RUN poetry install -E 'twisted web' --only-root
 
+ARG GITHUB_SHA
 RUN echo "${GITHUB_SHA}" > /COMMIT_SHA
 
 # new stage for building the Vue frontend
 FROM node:22 AS frontend-builder
-ARG GOOGLE_MAPS_API_KEY
-ARG CLOUDFLARE_TURNSTILE_SITE_KEY
-ARG GITHUB_SHA
 
 WORKDIR /build/frontend
 COPY frontend_vue/package*.json ./
@@ -43,6 +39,10 @@ COPY frontend_vue/package*.json ./
 RUN npm ci
 
 COPY frontend_vue/ ./
+
+ARG GOOGLE_MAPS_API_KEY
+ARG CLOUDFLARE_TURNSTILE_SITE_KEY
+ARG GITHUB_SHA
 
 # Create .env file with build-time variables
 RUN touch .env && \
