@@ -28,7 +28,7 @@ RUN wget -O archive.zip https://github.com/thinkst/canarytokens/archive/refs/hea
 FROM node:22 AS frontend-builder
 ARG GOOGLE_MAPS_API_KEY
 ARG CLOUDFLARE_TURNSTILE_SITE_KEY
-ARG VITE_GITHUB_SHA 
+ARG VITE_GITHUB_SHA
 
 WORKDIR /build
 COPY --from=builder /archive.zip /build/archive.zip
