@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libz-dev locales lsb-release lsof make ncdu net-tools openssh-client \
         osslsigncode patch sudo unzip vim-tiny wget zip zlib1g && \
     rm -rf /var/lib/apt/lists/* && \
-    python -m pip install poetry
+    python -m pip install poetry==2.2.1
 ARG BRANCH=master
 RUN wget -O archive.zip https://github.com/thinkst/canarytokens/archive/refs/heads/${BRANCH}.zip && \
     unzip archive.zip && \
@@ -28,8 +28,7 @@ RUN wget -O archive.zip https://github.com/thinkst/canarytokens/archive/refs/hea
 FROM node:22 AS frontend-builder
 ARG GOOGLE_MAPS_API_KEY
 ARG CLOUDFLARE_TURNSTILE_SITE_KEY
-ARG GITHUB_SHA
-ARG USE_CACHE_MOUNTS=false
+ARG VITE_GITHUB_SHA 
 
 WORKDIR /build
 COPY --from=builder /archive.zip /build/archive.zip
@@ -39,12 +38,11 @@ RUN unzip archive.zip && \
 WORKDIR /build/frontend
 
 # Install dependencies
-RUN --mount=type=cache,target=/root/.npm,enabled=${USE_CACHE_MOUNTS} \
-    npm ci --cache /root/.npm
+RUN npm ci
 
 # Create .env file with build-time variables
 RUN touch .env && \
-    echo "VITE_GITHUB_SHA=${GITHUB_SHA}" >> .env && \
+    echo "VITE_GITHUB_SHA=${VITE_GITHUB_SHA}" >> .env && \
     echo "VITE_GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}" >> .env && \
     echo "VITE_CLOUDFLARE_TURNSTILE_SITE_KEY=${CLOUDFLARE_TURNSTILE_SITE_KEY}" >> .env && \
     cat .env
@@ -55,8 +53,6 @@ RUN npm run build
 # discarding the build-stage image and adding a new one
 # with only the necessary binaries/libraries to run the app
 FROM builder AS canary-tokens
-ARG USE_CACHE_MOUNTS=false
-
 # copy the working directory from the previous image into the final image
 COPY --from=builder /srv /srv
 
@@ -66,8 +62,6 @@ COPY --from=frontend-builder /build/dist /srv/dist
 
 # setting the working environment
 WORKDIR /srv
-RUN --mount=type=cache,target=/root/.cache/pip,enabled=${USE_CACHE_MOUNTS} \
-    --mount=type=cache,target=/root/.cache/pypoetry,enabled=${USE_CACHE_MOUNTS} \
-    poetry install -E 'twisted web'
+RUN poetry install -E 'twisted web'
 
 CMD echo "Please use the docker compose setup described at https://github.com/thinkst/canarytokens-docker"
