@@ -24,7 +24,7 @@ RUN poetry install -E 'twisted web' --no-root
 
 COPY . .
 
-RUN poetry install -E 'twisted web' --only-root
+RUN poetry install -E 'twisted web'
 
 # new stage for building the Vue frontend
 FROM node:22 AS frontend-builder
