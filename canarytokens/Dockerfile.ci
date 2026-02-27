@@ -20,8 +20,6 @@ WORKDIR /srv
 
 COPY pyproject.toml poetry.lock ./
 
-ENV POETRY_VIRTUALENVS_CREATE=false
-
 RUN poetry install -E 'twisted web' --no-root
 
 COPY . .
@@ -63,4 +61,5 @@ COPY --from=frontend-builder /build/dist /srv/dist
 
 ARG GITHUB_SHA
 RUN echo "${GITHUB_SHA}" > /COMMIT_SHA
+WORKDIR /srv
 CMD echo "Please use the docker compose setup described at https://github.com/thinkst/canarytokens-docker"
