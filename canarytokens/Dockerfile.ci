@@ -6,6 +6,7 @@ LABEL Description="This image provides the frontend site for Canarytokens" Vendo
 WORKDIR /
 # removing PIP deprecation banners
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates dnsutils fortune-mod fortunes gcc gnupg2 iproute2 jq \
@@ -31,7 +32,6 @@ FROM node:22 AS frontend-builder
 
 WORKDIR /build/frontend
 COPY frontend_vue/package*.json ./
-
 
 RUN npm ci
 
