@@ -21,7 +21,7 @@ services:
      - ./uploads:/uploads/
      - log-volume:/logs
     container_name: frontend
-    command: bash -c "cd frontend; poetry run python -m uvicorn app:app --host 0.0.0.0 --port 8082"
+    command: bash -c "cd frontend; uv run python -m uvicorn app:app --host 0.0.0.0 --port 8082"
   switchboard_common:
     restart: always
     image: thinkst/canarytokens
@@ -42,7 +42,7 @@ services:
      - ./uploads:/uploads/
      - log-volume:/logs
     container_name: switchboard
-    command: bash -c "cd switchboard; rm -f switchboard.pid; poetry run twistd -noy switchboard.tac --pidfile=switchboard.pid"
+    command: bash -c "cd switchboard; rm -f switchboard.pid; uv run twistd -noy switchboard.tac --pidfile=switchboard.pid"
   nginx_common_certbot:
     restart: always
     image: thinkst/certbot-nginx

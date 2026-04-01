@@ -4,8 +4,9 @@ MAINTAINER Marco Slaviero <marco@thinkst.com>
 LABEL Description="This image provides the frontend site for Canarytokens" Vendor="Thinkst Applied Research" Version="1.4"
 # setting the current directory
 WORKDIR /
-# removing PIP deprecation banners
-ENV PIP_DISABLE_PIP_VERSION_CHECK=1
+
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -14,18 +15,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libz-dev locales lsb-release lsof make ncdu net-tools openssh-client \
         osslsigncode patch sudo unzip vim-tiny wget zip zlib1g && \
     rm -rf /var/lib/apt/lists/*
-RUN python -m pip install poetry==2.2.1
 
 # setting the working environment
 WORKDIR /srv
 
-COPY pyproject.toml poetry.lock ./
+COPY pyproject.toml uv.lock ./
 
-RUN poetry install -E 'twisted web' --no-root
+RUN uv sync --no-install-project
 
 COPY . .
 
-RUN poetry install -E 'twisted web'
+RUN uv sync
 
 # new stage for building the Vue frontend
 FROM node:22 AS frontend-builder

@@ -6,8 +6,8 @@ MAINTAINER Marco Slaviero <marco@thinkst.com>
 LABEL Description="This image provides the frontend site for Canarytokens" Vendor="Thinkst Applied Research" Version="1.4"
 # setting the current directory
 WORKDIR /
-# removing PIP deprecation banners
-ENV PIP_DISABLE_PIP_VERSION_CHECK=1
+
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # concatenating RUN commands into a single image layer
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -15,8 +15,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libffi-dev libncurses5-dev libreadline-dev libssl-dev libxml2-dev libxslt-dev \
         libz-dev locales lsb-release lsof make ncdu net-tools openssh-client \
         osslsigncode patch sudo unzip vim-tiny wget zip zlib1g && \
-    rm -rf /var/lib/apt/lists/* && \
-    python -m pip install poetry==2.2.1
+    rm -rf /var/lib/apt/lists/*
+
 ARG BRANCH=master
 RUN wget -O archive.zip https://github.com/thinkst/canarytokens/archive/refs/heads/${BRANCH}.zip && \
     unzip archive.zip && \
@@ -62,6 +62,6 @@ COPY --from=frontend-builder /build/dist /srv/dist
 
 # setting the working environment
 WORKDIR /srv
-RUN poetry install -E 'twisted web'
+RUN uv sync
 
 CMD echo "Please use the docker compose setup described at https://github.com/thinkst/canarytokens-docker"
