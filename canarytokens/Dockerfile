@@ -2,7 +2,7 @@ ARG ARCH=amd64
 
 FROM --platform=linux/${ARCH} python:3.13 AS builder
 MAINTAINER Marco Slaviero <marco@thinkst.com>
-COPY --from=ghcr.io/astral-sh/uv:0.11.24 /uv /uvx /usr/local/bin/
+COPY --from=ghcr.io/astral-sh/uv:0.13.4 /uv /uvx /usr/local/bin/
 
 LABEL Description="This image provides the frontend site for Canarytokens" Vendor="Thinkst Applied Research" Version="1.4"
 # setting the current directory
